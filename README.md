@@ -1,50 +1,74 @@
-# React + TypeScript + Vite
+# React + Vite + TypeScript Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is built with [Vite](https://vitejs.dev/), using React, TypeScript, and several essential libraries. Below are the installation steps and project details.
 
-Currently, two official plugins are available:
+## Requirements
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Node.js v20.17.0** (installed using [nvm](https://github.com/nvm-sh/nvm))
+- **npm** (comes with Node.js)
+- **Vite** for fast bundling and development
 
-## Expanding the ESLint configuration
+## Setup Instructions
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### 1. Clone the Repository
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+git clone <your-repo-url>
+cd <your-repo-directory>
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### 2. Install Node Version
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+Ensure you're using the correct version of Node.js (v20.17.0). Run the following commands to install and use this version via `nvm`:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+nvm install 20.17.0
+nvm use 20.17.0
 ```
+
+### 3. Install Dependencies
+
+Once you have the correct Node.js version, install the project dependencies:
+
+```bash
+npm install
+```
+
+### 4. Start the Development Server
+
+To start the development server with Vite:
+
+```bash
+npm run dev
+```
+
+This will start the server, and you can visit the project at [http://localhost:5173](http://localhost:5173).
+
+## Key Libraries Used
+
+- **React Router DOM**: For managing navigation within the app.
+  - [Documentation](https://reactrouter.com/en/main)
+- **Tailwind CSS**: A utility-first CSS framework for styling.
+  - [Documentation](https://tailwindcss.com/)
+- **Daisy UI**: A Tailwind CSS component library for building UI.
+  - [Documentation](https://daisyui.com/)
+- **React Hot Toast**: For showing toast notifications.
+  - [Documentation](https://react-hot-toast.com/)
+
+## Additional Commands
+
+- **Build for production**:
+
+```bash
+npm run build
+```
+
+- **Preview production build**:
+
+```bash
+npm run preview
+```
+
+## License
+
+This project is licensed under the MIT License.
