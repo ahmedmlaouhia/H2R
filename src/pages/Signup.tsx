@@ -4,7 +4,9 @@ const Signup = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const handleSignup = async () => {}
+  const handleSignup = async () => {
+    console.log(email, password)
+  }
 
   return (
     <div className="hero bg-base-200 min-h-screen">
@@ -28,6 +30,7 @@ const Signup = () => {
                 placeholder="email"
                 className="input input-bordered"
                 required
+                onChange={e => setEmail(e.target.value)}
               />
             </div>
             <div className="form-control">
@@ -39,6 +42,7 @@ const Signup = () => {
                 placeholder="password"
                 className="input input-bordered"
                 required
+                onChange={e => setPassword(e.target.value)}
               />
               <label className="label">
                 <a href="#" className="label-text-alt link link-hover">
@@ -47,7 +51,9 @@ const Signup = () => {
               </label>
             </div>
             <div className="form-control mt-6">
-              <button className="btn btn-primary">Signup</button>
+              <button className="btn btn-primary" onSubmit={handleSignup}>
+                Signup
+              </button>
             </div>
           </form>
         </div>
