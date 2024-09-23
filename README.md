@@ -13,8 +13,8 @@ This project is built with [Vite](https://vitejs.dev/), using React, TypeScript,
 ### 1. Clone the Repository
 
 ```bash
-git clone <your-repo-url>
-cd <your-repo-directory>
+git git@github.com:ahmedmlaouhia/H2R.git
+cd H2R
 ```
 
 ### 2. Install Node Version
