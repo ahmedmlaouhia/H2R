@@ -6,7 +6,7 @@ const Signup = () => {
   const [password, setPassword] = useState("")
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
-  const [phone, setPhone] = useState(0)
+  const [phone, setPhone] = useState("")
 
   const handleSignup = async (e: any) => {
     e.preventDefault()
@@ -19,7 +19,9 @@ const Signup = () => {
         password
       )
       toast.success(response.message)
-    } catch (error) {}
+    } catch (error: any) {
+      toast.error(error.response?.data.message || error.message)
+    }
   }
 
   return (
@@ -66,11 +68,11 @@ const Signup = () => {
                 <span className="label-text">Phone</span>
               </label>
               <input
-                type="number"
+                type="text"
                 placeholder="+1 23 456 7890"
                 className="input input-bordered"
                 required
-                onChange={e => setPhone(Number(e.target.value))}
+                onChange={e => setPhone(e.target.value)}
               />
             </div>
             <div className="form-control">

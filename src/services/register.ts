@@ -4,12 +4,12 @@ const register = {
   async createUser(
     firstName: string,
     lastName: string,
-    phone: Number,
+    phone: string,
     email: string,
     password: string
   ) {
     try {
-      const response = await client.post("/register", {
+      const response = await client.post("/user/signup", {
         firstName,
         lastName,
         phone,
