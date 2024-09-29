@@ -1,6 +1,6 @@
 import { Toaster } from "react-hot-toast"
-import Footer from "./components/Footer"
-import Navbar from "./components/Navbar"
+// import Footer from "./components/Footer"
+// import Navbar from "./components/Navbar"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
@@ -24,9 +24,9 @@ function App() {
   return (
     <>
       <Toaster />
-      <Navbar />
+      {/* <Navbar /> */}
       <RouterProvider router={router} />
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
 }
