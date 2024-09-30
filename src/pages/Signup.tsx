@@ -111,11 +111,7 @@ const Signup = () => {
                 required
               />
             </div>
-            <label className="label !pb-[0.25rem]">
-              <a href="#" className="label-text-alt link link-hover">
-                Forgot password?
-              </a>
-            </label>
+
             <div className="form-control mt-6">
               <button className="btn btn-primary" type="submit">
                 Signup

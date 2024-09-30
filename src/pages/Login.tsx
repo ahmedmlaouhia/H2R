@@ -1,16 +1,22 @@
 import { useState } from "react"
 import { toast } from "react-hot-toast"
 import auth from "../services/auth"
+import { useNavigate } from "react-router-dom"
 
 const Login = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const navigate = useNavigate()
 
   const handleLogin = async (e: any) => {
     e.preventDefault()
     try {
-      const response = await auth.login(email, password)
-      toast.success(response.message)
+      await auth.login(email, password).then(res => {
+        toast.success(res.message)
+        localStorage.setItem("token", res.token)
+        localStorage.setItem("user", JSON.stringify(res.user))
+        navigate("/")
+      })
     } catch (error: any) {
       toast.error(error.response?.data.message || error.message)
     }
@@ -28,7 +34,7 @@ const Login = () => {
         </div>
         <div className="card bg-base-100 w-full max-w-lg shrink-0 shadow-2xl">
           <form className="card-body !gap-0" onSubmit={handleLogin}>
-            <h2 className="text-3xl text-center font-bold mb-6">Sign up</h2>
+            <h2 className="text-3xl text-center font-bold mb-6">Login</h2>
             <div className="form-control">
               <label className="label !pb-[0.25rem]">
                 <span className="label-text">Email</span>
@@ -61,7 +67,7 @@ const Login = () => {
             </label>
             <div className="form-control mt-6">
               <button className="btn btn-primary" type="submit">
-                Signup
+                Login
               </button>
             </div>
           </form>

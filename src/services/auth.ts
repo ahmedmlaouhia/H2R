@@ -3,7 +3,7 @@ import client from "../utils/axios"
 const auth = {
   login: async (email: string, password: string) => {
     try {
-      const response = await client.post("/login", {
+      const response = await client.post("/user/login", {
         email,
         password,
       })
@@ -14,7 +14,7 @@ const auth = {
   },
   logout: async () => {
     try {
-      const response = await client.post("/logout")
+      const response = await client.post("/auth/logout")
       return response.data
     } catch (error) {
       throw error
