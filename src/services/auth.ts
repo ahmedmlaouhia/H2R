@@ -3,7 +3,7 @@ import client from "../utils/axios"
 const auth = {
   login: async (email: string, password: string) => {
     try {
-      const response = await client.post("/user/login", {
+      const response = await client.post("/auth/login", {
         email,
         password,
       })
