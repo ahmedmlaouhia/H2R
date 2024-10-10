@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import register from "../services/register"
 import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
@@ -10,6 +10,10 @@ const Signup = () => {
   const [phone, setPhone] = useState("")
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    localStorage.getItem("token") && navigate("/")
+  })
 
   const handleSignup = async (e: any) => {
     e.preventDefault()

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { toast } from "react-hot-toast"
 import auth from "../services/auth"
 import { useNavigate } from "react-router-dom"
@@ -7,6 +7,10 @@ const Login = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
+
+  useEffect(() => {
+    localStorage.getItem("token") && navigate("/")
+  })
 
   const handleLogin = async (e: any) => {
     e.preventDefault()

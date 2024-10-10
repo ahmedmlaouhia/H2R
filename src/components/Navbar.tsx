@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom"
 
 const Navbar = () => {
   const isLoggedIn = localStorage.getItem("token")
-  const userName = localStorage.getItem("username") || "me"
+  const userName = JSON.parse(localStorage.getItem("user") || "{}").firstName
   const navigate = useNavigate()
   const goToProfile = () => {
     navigate("/profile")
