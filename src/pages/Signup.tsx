@@ -76,8 +76,8 @@ const Signup = () => {
                 <span className="label-text">Phone</span>
               </label>
               <input
-                type="text"
-                placeholder="+1 23 456 7890"
+                type="number"
+                placeholder="123 456 7890"
                 className="input input-bordered"
                 required
                 onChange={e => setPhone(e.target.value)}

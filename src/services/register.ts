@@ -9,7 +9,7 @@ const register = {
     password: string
   ) {
     try {
-      const response = await client.post("/user/signup", {
+      const response = await client.post("/user/create", {
         firstName,
         lastName,
         phone,

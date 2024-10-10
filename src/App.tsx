@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
 import Signup from "./pages/Signup"
+import Users from "./pages/users"
 
 function Layout() {
   return (
@@ -23,6 +24,7 @@ function App() {
         { path: "/", element: <Home /> },
         { path: "/login", element: <Login /> },
         { path: "/signup", element: <Signup /> },
+        { path: "/Employees", element: <Users /> },
       ],
     },
   ])
