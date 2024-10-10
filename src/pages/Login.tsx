@@ -14,7 +14,7 @@ const Login = () => {
       await auth.login(email, password).then(res => {
         toast.success(res.message)
         localStorage.setItem("token", res.token)
-        localStorage.setItem("user", JSON.stringify(res.user))
+        localStorage.setItem("user", JSON.stringify(res.result))
         navigate("/")
       })
     } catch (error: any) {

@@ -1,32 +1,35 @@
 import { Toaster } from "react-hot-toast"
-// import Footer from "./components/Footer"
 import Navbar from "./components/Navbar"
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
 import Signup from "./pages/Signup"
+
+function Layout() {
+  return (
+    <>
+      <Navbar />
+      <Outlet />
+    </>
+  )
+}
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Home />,
-    },
-    {
-      path: "/login",
-      element: <Login />,
-    },
-    {
-      path: "/signup",
-      element: <Signup />,
+      element: <Layout />,
+      children: [
+        { path: "/", element: <Home /> },
+        { path: "/login", element: <Login /> },
+        { path: "/signup", element: <Signup /> },
+      ],
     },
   ])
   return (
     <>
       <Toaster />
-      <Navbar />
       <RouterProvider router={router} />
-      {/* <Footer /> */}
     </>
   )
 }

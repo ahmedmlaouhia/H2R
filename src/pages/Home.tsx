@@ -1,12 +1,5 @@
-// import Hero from "../components/Hero"
-
 const Home = () => {
-  return (
-    <div>
-      home
-      {/* <Hero /> */}
-    </div>
-  )
+  return <div className="px-20 py-10">home</div>
 }
 
 export default Home
