@@ -41,6 +41,14 @@ const Navbar = () => {
               </li>
               <li>
                 <button
+                  className="btn bg-transparent border-0 !shadow-none py-0 hover:bg-transparent"
+                  onClick={() => navigate("/users")}
+                >
+                  Users
+                </button>
+              </li>
+              <li>
+                <button
                   className="btn bg-transparent border-0 !shadow-none py-2 hover:bg-transparent"
                   onClick={handleLogout}
                 >

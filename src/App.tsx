@@ -24,7 +24,7 @@ function App() {
         { path: "/", element: <Home /> },
         { path: "/login", element: <Login /> },
         { path: "/signup", element: <Signup /> },
-        { path: "/Employees", element: <Users /> },
+        { path: "/users", element: <Users /> },
       ],
     },
   ])
