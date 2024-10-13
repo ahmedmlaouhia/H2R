@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from "react"
 import { GiCancel } from "react-icons/gi"
 import { SiTicktick } from "react-icons/si"
+import toast from "react-hot-toast"
+import Leave from "../services/leave"
 
 const Leaves = () => {
   const [leaveBalance, setLeaveBalance] = useState(0)
   const [leaves, setLeaves] = useState([])
   const cancelRef = useRef<HTMLDialogElement>(null)
   const editRef = useRef<HTMLDialogElement>(null)
-  const [cancelId, setCancelId] = useState("")
+  const [selectedLeaveId, setSelectedLeaveId] = useState("")
   const [editedLeave, setEditedLeave] = useState({
     id: "",
     firstName: "",
@@ -15,22 +17,39 @@ const Leaves = () => {
     email: "",
     phone: 0,
   })
+
+  const fetchLeaves = async () => {
+    try {
+      const response = await Leave.getMyLeaves()
+      setLeaves(response.leaves)
+    } catch (error: any) {
+      toast.error(error.response?.data.message || error.message)
+    }
+  }
+  useEffect(() => {
+    fetchLeaves()
+  }, [])
+
   const handleCancel = async () => {
-    // const response = await axios.post(`/api/leaves/${deleteId}/cancel`)
-    // if (response.status === 200) {
-    //   setLeaves(leaves.filter((leave: any) => leave.id !== deleteId))
-    // }
+    try {
+      await Leave.cancelLeave(selectedLeaveId).then(() => {
+        toast.success("Leave request canceled")
+        fetchLeaves()
+      })
+    } catch (error: any) {
+      toast.error(error.response?.data.message || error.message)
+    }
   }
 
   const handleEdit = async () => {
-    // const response = await axios.put(`/api/users/${editedUser.id}`, editedUser)
-    // if (response.status === 200) {
-    //   setLeaves(
-    //     leaves.map((leave: any) =>
-    //       leave.id === editedUser.id ? editedUser : leave
-    //     )
-    //   )
-    // }
+    try {
+      await Leave.updateLeave(selectedLeaveId, editedLeave).then(() => {
+        toast.success("Leave request updated")
+        fetchLeaves()
+      })
+    } catch (error: any) {
+      toast.error(error.response?.data.message || error.message)
+    }
   }
 
   return (
@@ -134,10 +153,9 @@ const Leaves = () => {
                 {leaves.map((leave: any, index: number) => (
                   <tr tabIndex={index} key={index} className="hover">
                     <th>{index + 1}</th>
-                    <td>{leave.user.firstName}</td>
-                    <td>{leave.user.lastName}</td>
-                    <td>{leave.user.email}</td>
                     <td>{leave.period}</td>
+                    <td>{leave.reason}</td>
+                    <td>{leave.status}</td>
                     <td className="flex h-full justify-center gap-3 text-lg">
                       <SiTicktick
                         className="text-green-700"
