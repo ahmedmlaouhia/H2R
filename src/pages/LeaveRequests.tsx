@@ -12,7 +12,7 @@ const LeaveRequests = () => {
   const fetchLeaves = async () => {
     try {
       const response = await Leave.getLeaves()
-      setLeaveRequests(response.data)
+      setLeaveRequests(response.leaves)
     } catch (error) {
       console.log(error)
     }
@@ -34,7 +34,7 @@ const LeaveRequests = () => {
   const handleReject = async () => {}
 
   return (
-    <div className="px-20 py-10 h-full w-full flex flex-col">
+    <div className="px-10 py-10 h-full w-full flex flex-col">
       <dialog ref={rejectRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
           <h3 className="font-bold text-lg text-center">
@@ -102,8 +102,10 @@ const LeaveRequests = () => {
               <th></th>
               <th>First Name</th>
               <th>Last Name</th>
+              <th>Email</th>
               <th>Period</th>
               <th>Reason</th>
+              <th>Leave Balance</th>
               <th className="text-center">Action</th>
             </tr>
           </thead>
@@ -129,29 +131,36 @@ const LeaveRequests = () => {
                   </div>
                 </td>
                 <td>{leaveRequest.reason}</td>
+                <td>{leaveRequest.user.leaveBalance}</td>
                 <td className="flex h-full items-center justify-center gap-3 text-lg">
-                  <button className="tooltip" data-tip="Approve">
-                    <SiTicktick
-                      className="text-green-700"
-                      onClick={() => {
-                        setSelectedLeaveId(leaveRequest.id)
-                        if (approveRef.current) {
-                          approveRef.current.showModal()
-                        }
-                      }}
-                    />
-                  </button>
-                  <button className="tooltip" data-tip="Cancel">
-                    <GiCancel
-                      className="text-red-700"
-                      onClick={() => {
-                        setSelectedLeaveId(leaveRequest.id)
-                        if (rejectRef.current) {
-                          rejectRef.current.showModal()
-                        }
-                      }}
-                    />
-                  </button>
+                  {leaveRequest.status === "pending" ? (
+                    <>
+                      <button className="tooltip" data-tip="Approve">
+                        <SiTicktick
+                          className="text-green-700"
+                          onClick={() => {
+                            setSelectedLeaveId(leaveRequest.id)
+                            if (approveRef.current) {
+                              approveRef.current.showModal()
+                            }
+                          }}
+                        />
+                      </button>
+                      <button className="tooltip" data-tip="Reject">
+                        <GiCancel
+                          className="text-red-700"
+                          onClick={() => {
+                            setSelectedLeaveId(leaveRequest.id)
+                            if (rejectRef.current) {
+                              rejectRef.current.showModal()
+                            }
+                          }}
+                        />
+                      </button>
+                    </>
+                  ) : (
+                    <span>{leaveRequest.status}</span>
+                  )}
                 </td>
               </tr>
             ))}

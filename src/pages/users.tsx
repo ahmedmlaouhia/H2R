@@ -89,7 +89,7 @@ const Users = () => {
   }
 
   return (
-    <div className="px-20 py-10 h-full w-full flex flex-col gap-5">
+    <div className="px-10 py-10 h-full w-full flex flex-col gap-5">
       <dialog ref={editRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
           <h3 className="font-bold text-lg  text-center">Edit User</h3>
@@ -268,146 +268,138 @@ const Users = () => {
       {HRs.length < 1 ? (
         <p className="text-center text-2xl">No HRs found</p>
       ) : (
-        <div className="overflow-x-auto">
-          <div>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Email</th>
-                  <th>Phone Number</th>
-                  <th className="text-center">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {HRs.map((user: any, index: number) => (
-                  <tr tabIndex={index} key={index} className="hover">
-                    <th>{index + 1}</th>
-                    <td>{user.firstName}</td>
-                    <td>{user.lastName}</td>
-                    <td>{user.email}</td>
-                    <td>{user.phone}</td>
-                    <td className="flex h-full justify-center gap-3 text-lg">
-                      <button
-                        className="text-green-700"
-                        onClick={() => {
-                          setEditedUser({
-                            id: user.id,
-                            firstName: user.firstName,
-                            lastName: user.lastName,
-                            email: user.email,
-                            phone: user.phone,
-                          })
-                          if (editRef.current) {
-                            editRef.current.showModal()
-                          }
-                        }}
-                      >
-                        <AiTwotoneEdit />
-                      </button>
-                      <button>
-                        <IoTrashOutline
-                          className="text-red-700"
-                          onClick={() => {
-                            setDeleteId(user.id)
-                            if (deleteRef.current) {
-                              deleteRef.current.showModal()
-                            }
-                          }}
-                        />
-                      </button>
-                      <button
-                        onClick={() => {
-                          setMakeEmployeeId(user.id)
-                          if (makeEmployeeRef.current) {
-                            makeEmployeeRef.current.showModal()
-                          }
-                        }}
-                      >
-                        <span>Make Employee</span>
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <table className="table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Phone Number</th>
+              <th className="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {HRs.map((user: any, index: number) => (
+              <tr tabIndex={index} key={index} className="hover">
+                <th>{index + 1}</th>
+                <td>{user.firstName}</td>
+                <td>{user.lastName}</td>
+                <td>{user.email}</td>
+                <td>{user.phone}</td>
+                <td className="flex h-full justify-center gap-3 text-lg">
+                  <button
+                    className="text-green-700"
+                    onClick={() => {
+                      setEditedUser({
+                        id: user.id,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        email: user.email,
+                        phone: user.phone,
+                      })
+                      if (editRef.current) {
+                        editRef.current.showModal()
+                      }
+                    }}
+                  >
+                    <AiTwotoneEdit />
+                  </button>
+                  <button>
+                    <IoTrashOutline
+                      className="text-red-700"
+                      onClick={() => {
+                        setDeleteId(user.id)
+                        if (deleteRef.current) {
+                          deleteRef.current.showModal()
+                        }
+                      }}
+                    />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setMakeEmployeeId(user.id)
+                      if (makeEmployeeRef.current) {
+                        makeEmployeeRef.current.showModal()
+                      }
+                    }}
+                  >
+                    <span>Make Employee</span>
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
       <div className="divider"></div>
       <h1 className="text-3xl font-bold text-center">Employees</h1>
       {employees.length < 1 ? (
         <p className="text-center text-2xl">No Employees found</p>
       ) : (
-        <div className="overflow-x-auto">
-          <div>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Email</th>
-                  <th>Phone Number</th>
-                  <th className="text-center">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {employees.map((user: any, index: number) => (
-                  <tr tabIndex={index} key={index} className="hover">
-                    <th>{index + 1}</th>
-                    <td>{user.firstName}</td>
-                    <td>{user.lastName}</td>
-                    <td>{user.email}</td>
-                    <td>{user.phone}</td>
-                    <td className="flex h-full justify-center gap-3 text-lg">
-                      <button
-                        className="text-green-700"
-                        onClick={() => {
-                          setEditedUser({
-                            id: user.id,
-                            firstName: user.firstName,
-                            lastName: user.lastName,
-                            email: user.email,
-                            phone: user.phone,
-                          })
-                          if (editRef.current) {
-                            editRef.current.showModal()
-                          }
-                        }}
-                      >
-                        <AiTwotoneEdit />
-                      </button>
-                      <button>
-                        <IoTrashOutline
-                          className="text-red-700"
-                          onClick={() => {
-                            setDeleteId(user.id)
-                            if (deleteRef.current) {
-                              deleteRef.current.showModal()
-                            }
-                          }}
-                        />
-                      </button>
-                      <button
-                        onClick={() => {
-                          setMakeHRId(user.id)
-                          if (makeHRRef.current) {
-                            makeHRRef.current.showModal()
-                          }
-                        }}
-                      >
-                        <span>Make HR</span>
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <table className="table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Phone Number</th>
+              <th className="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {employees.map((user: any, index: number) => (
+              <tr tabIndex={index} key={index} className="hover">
+                <th>{index + 1}</th>
+                <td>{user.firstName}</td>
+                <td>{user.lastName}</td>
+                <td>{user.email}</td>
+                <td>{user.phone}</td>
+                <td className="flex h-full justify-center gap-3 text-lg">
+                  <button
+                    className="text-green-700"
+                    onClick={() => {
+                      setEditedUser({
+                        id: user.id,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        email: user.email,
+                        phone: user.phone,
+                      })
+                      if (editRef.current) {
+                        editRef.current.showModal()
+                      }
+                    }}
+                  >
+                    <AiTwotoneEdit />
+                  </button>
+                  <button>
+                    <IoTrashOutline
+                      className="text-red-700"
+                      onClick={() => {
+                        setDeleteId(user.id)
+                        if (deleteRef.current) {
+                          deleteRef.current.showModal()
+                        }
+                      }}
+                    />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setMakeHRId(user.id)
+                      if (makeHRRef.current) {
+                        makeHRRef.current.showModal()
+                      }
+                    }}
+                  >
+                    <span>Make HR</span>
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </div>
   )
