@@ -7,6 +7,7 @@ import Signup from "./pages/Signup"
 import Users from "./pages/users"
 import Sidebar from "./components/Sidebar"
 import ProtectedRoute from "./utils/protectedRoute"
+import LeaveRequests from "./pages/LeaveRequests"
 
 function Layout() {
   return (
@@ -51,7 +52,7 @@ function App() {
             { path: "/users", element: <Users /> },
             { path: "/me", element: <div>User Detail</div> },
             { path: "/leaves", element: <div>Leave</div> },
-            { path: "/leaveRequests", element: <div>Leave Request</div> },
+            { path: "/leaveRequests", element: <LeaveRequests /> },
             { path: "/unauthorized", element: <div>Unauthorized</div> },
           ],
         },
