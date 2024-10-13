@@ -85,7 +85,7 @@ const Users = () => {
   }
 
   return (
-    <div className="px-20 py-10 flex flex-col gap-5">
+    <div className="px-20 py-10 h-full w-full flex flex-col gap-5">
       <dialog ref={editRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
           <h3 className="font-bold text-lg">Edit User</h3>

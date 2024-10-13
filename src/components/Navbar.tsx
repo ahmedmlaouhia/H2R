@@ -12,7 +12,7 @@ const Navbar = () => {
   }
 
   return (
-    <div className="navbar bg-base-100 shadow-md px-20">
+    <div className="navbar bg-base-200 shadow-md px-20">
       <div className="flex-1">
         <img src="hrlogo.png" alt="navlogo" className="h-14 w-14" />
       </div>
@@ -30,20 +30,13 @@ const Navbar = () => {
             >
               <li>
                 <Link
-                  to="/profile"
+                  to="/me"
                   className="btn rounded-none border-0 !shadow-none py-0 "
                 >
                   Profile
                 </Link>
               </li>
-              <li>
-                <Link
-                  to="/users"
-                  className="btn rounded-none border-0 !shadow-none py-0 "
-                >
-                  Users
-                </Link>
-              </li>
+
               <li>
                 <button
                   className="btn rounded-none border-0 !shadow-none py-2 "

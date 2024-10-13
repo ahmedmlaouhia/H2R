@@ -5,6 +5,8 @@ import Home from "./pages/Home"
 import Login from "./pages/Login"
 import Signup from "./pages/Signup"
 import Users from "./pages/users"
+import Sidebar from "./components/Sidebar"
+import ProtectedRoute from "./utils/protectedRoute"
 
 function Layout() {
   return (
@@ -15,16 +17,45 @@ function Layout() {
   )
 }
 
+function Main() {
+  return (
+    <div className="flex h-screen justify-between">
+      <Sidebar />
+      <Outlet />
+    </div>
+  )
+}
+
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
       element: <Layout />,
       children: [
-        { path: "/", element: <Home /> },
         { path: "/login", element: <Login /> },
         { path: "/signup", element: <Signup /> },
-        { path: "/users", element: <Users /> },
+        {
+          path: "/",
+          element: (
+            <ProtectedRoute allowedRoles={["none"]}>
+              <Main />
+            </ProtectedRoute>
+          ),
+          children: [
+            {
+              path: "/",
+              element: <Home />,
+            },
+            { path: "/hr", element: <div>HR page</div> },
+            { path: "/admin", element: <div>admin page</div> },
+            { path: "/users", element: <Users /> },
+            { path: "/me", element: <div>User Detail</div> },
+            { path: "/leaves", element: <div>Leave</div> },
+            { path: "/leaveRequests", element: <div>Leave Request</div> },
+            { path: "/unauthorized", element: <div>Unauthorized</div> },
+          ],
+        },
+        { path: "*", element: <div>Not Found</div> },
       ],
     },
   ])
