@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom"
 
 const Navbar = () => {
   const isLoggedIn = localStorage.getItem("token")
-  const userName = JSON.parse(localStorage.getItem("user") || "{}").firstName
+  const userName =
+    JSON.parse(localStorage.getItem("user") || "{}").firstName || "Me"
   const navigate = useNavigate()
 
   const handleLogout = () => {
