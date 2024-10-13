@@ -4,10 +4,10 @@ import { AiTwotoneEdit } from "react-icons/ai"
 import { IoTrashOutline } from "react-icons/io5"
 import toast from "react-hot-toast"
 const Users = () => {
-  const deleteRef = useRef<HTMLDialogElement | null>(null)
-  const editRef = useRef<HTMLDialogElement | null>(null)
-  const makeHRRef = useRef<HTMLDialogElement | null>(null)
-  const makeEmployeeRef = useRef<HTMLDialogElement | null>(null)
+  const deleteRef = useRef<HTMLDialogElement>(null)
+  const editRef = useRef<HTMLDialogElement>(null)
+  const makeHRRef = useRef<HTMLDialogElement>(null)
+  const makeEmployeeRef = useRef<HTMLDialogElement>(null)
 
   const [employees, setEmployees] = useState([])
   const [editedUser, setEditedUser] = useState({
@@ -92,7 +92,7 @@ const Users = () => {
     <div className="px-20 py-10 h-full w-full flex flex-col gap-5">
       <dialog ref={editRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">Edit User</h3>
+          <h3 className="font-bold text-lg  text-center">Edit User</h3>
           <form
             onSubmit={e => {
               e.preventDefault()
@@ -165,13 +165,16 @@ const Users = () => {
                 }
               />
             </div>
-            <div className="modal-action">
-              <button type="submit" className="btn btn-primary">
+            <div className="modal-action flex justify-center">
+              <button type="submit" className="btn px-10 btn-primary ">
                 Save
               </button>
-              <form method="dialog">
-                <button className="btn">Cancel</button>
-              </form>
+              <button
+                className="btn px-10"
+                onClick={() => editRef.current?.close()}
+              >
+                Cancel
+              </button>
             </div>
           </form>
         </div>
@@ -181,13 +184,13 @@ const Users = () => {
         className="modal modal-bottom sm:modal-middle"
       >
         <div className="modal-box">
-          <h3 className="font-bold text-lg">
+          <h3 className="font-bold text-lg text-center">
             Are you Sure you want to make this user an Employee?
           </h3>
 
-          <div className="modal-action">
+          <div className="modal-action flex justify-center">
             <button
-              className="btn btn-primary"
+              className="btn btn-primary px-10"
               onClick={() => {
                 hendleMakeEmployee()
                 if (makeEmployeeRef.current) {
@@ -197,21 +200,24 @@ const Users = () => {
             >
               Yes
             </button>
-            <form method="dialog">
-              <button className="btn">No</button>
-            </form>
+            <button
+              className="btn px-10"
+              onClick={() => makeEmployeeRef.current?.close()}
+            >
+              No
+            </button>
           </div>
         </div>
       </dialog>
       <dialog ref={makeHRRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">
+          <h3 className="font-bold text-lg text-center">
             Are you Sure you want to make this user an HR?
           </h3>
 
-          <div className="modal-action">
+          <div className="modal-action flex justify-center">
             <button
-              className="btn btn-primary"
+              className="btn px-10 btn-primary"
               onClick={() => {
                 handleMakeHR()
                 if (makeHRRef.current) {
@@ -221,21 +227,24 @@ const Users = () => {
             >
               Yes
             </button>
-            <form method="dialog">
-              <button className="btn">No</button>
-            </form>
+            <button
+              className="btn px-10"
+              onClick={() => makeHRRef.current?.close()}
+            >
+              No
+            </button>
           </div>
         </div>
       </dialog>
       <dialog ref={deleteRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">
+          <h3 className="font-bold text-lg text-center">
             Are you Sure you want to delete this user?
           </h3>
 
-          <div className="modal-action">
+          <div className="modal-action flex justify-center gap-5">
             <button
-              className="btn btn-primary"
+              className="btn px-10 btn-primary"
               onClick={() => {
                 handleDelete()
                 if (deleteRef.current) {
@@ -245,9 +254,13 @@ const Users = () => {
             >
               Yes
             </button>
-            <form method="dialog">
-              <button className="btn">No</button>
-            </form>
+            <button
+              className="btn
+              px-10"
+              onClick={() => deleteRef.current?.close()}
+            >
+              No
+            </button>
           </div>
         </div>
       </dialog>
@@ -270,7 +283,7 @@ const Users = () => {
               </thead>
               <tbody>
                 {HRs.map((user: any, index: number) => (
-                  <tr tabIndex={index} className="hover">
+                  <tr tabIndex={index} key={index} className="hover">
                     <th>{index + 1}</th>
                     <td>{user.firstName}</td>
                     <td>{user.lastName}</td>
@@ -343,7 +356,7 @@ const Users = () => {
               </thead>
               <tbody>
                 {employees.map((user: any, index: number) => (
-                  <tr tabIndex={index} className="hover">
+                  <tr tabIndex={index} key={index} className="hover">
                     <th>{index + 1}</th>
                     <td>{user.firstName}</td>
                     <td>{user.lastName}</td>
