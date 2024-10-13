@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import user from "../services/users"
 import { AiTwotoneEdit } from "react-icons/ai"
 import { IoTrashOutline } from "react-icons/io5"
-
+import toast from "react-hot-toast"
 const Users = () => {
   const deleteRef = useRef<HTMLDialogElement | null>(null)
   const editRef = useRef<HTMLDialogElement | null>(null)
@@ -47,40 +47,44 @@ const Users = () => {
   const handleDelete = async () => {
     try {
       await user.deleteUser(deleteId)
+      toast.success("User deleted successfully")
       fetchEmployees()
       fetchHRs()
     } catch (error: any) {
-      console.log(error.response?.data.message || error.message)
+      toast.error(error.response?.data.message || error.message)
     }
   }
 
   const handleEdit = async () => {
     try {
       await user.updateUser(editedUser)
+      toast.success("User updated successfully")
       fetchEmployees()
       fetchHRs()
     } catch (error: any) {
-      console.log(error.response?.data.message || error.message)
+      toast.error(error.response?.data.message || error.message)
     }
   }
 
   const handleMakeHR = async () => {
     try {
       await user.makeHR(makeHRId)
+      toast.success("User made HR successfully")
       fetchEmployees()
       fetchHRs()
     } catch (error: any) {
-      console.log(error.response?.data.message || error.message)
+      toast.error(error.response?.data.message || error.message)
     }
   }
 
   const hendleMakeEmployee = async () => {
     try {
       await user.makeEmployee(makeEmployeeId)
+      toast.success("User made Employee successfully")
       fetchEmployees()
       fetchHRs()
     } catch (error: any) {
-      console.log(error.response?.data.message || error.message)
+      toast.error(error.response?.data.message || error.message)
     }
   }
 
