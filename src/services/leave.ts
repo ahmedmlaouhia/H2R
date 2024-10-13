@@ -61,8 +61,7 @@ const Leave = {
 
   async approveLeave(id: string) {
     try {
-      const response = await client.put(`/leave/approve/${id}`)
-      return response.data
+      await client.put(`/leave/approve/${id}`)
     } catch (error) {
       throw error
     }

@@ -23,15 +23,25 @@ const LeaveRequests = () => {
 
   const handleApprove = async () => {
     try {
-      await Leave.approveLeave(selectedLeaveId)
-      toast.success("Leave request approved")
-      fetchLeaves()
+      await Leave.approveLeave(selectedLeaveId).then(() => {
+        toast.success("Leave request approved")
+        fetchLeaves()
+      })
     } catch (error: any) {
       toast.error(error.response?.data.message || error.message)
     }
   }
 
-  const handleReject = async () => {}
+  const handleReject = async () => {
+    try {
+      await Leave.rejectLeave(selectedLeaveId).then(() => {
+        toast.success("Leave request rejected")
+        fetchLeaves()
+      })
+    } catch (error: any) {
+      toast.error(error.response?.data.message || error.message)
+    }
+  }
 
   return (
     <div className="px-10 py-10 h-full w-full flex flex-col">
@@ -132,8 +142,8 @@ const LeaveRequests = () => {
                 </td>
                 <td>{leaveRequest.reason}</td>
                 <td>{leaveRequest.user.leaveBalance}</td>
-                <td className="flex h-full items-center justify-center gap-3 text-lg">
-                  {leaveRequest.status === "pending" ? (
+                <td className="flex h-full items-center justify-center gap-3 font-bold">
+                  {leaveRequest.status === "Pending" ? (
                     <>
                       <button className="tooltip" data-tip="Approve">
                         <SiTicktick
@@ -158,8 +168,12 @@ const LeaveRequests = () => {
                         />
                       </button>
                     </>
+                  ) : leaveRequest.status === "Approved" ? (
+                    <span className="text-green-700">Approved</span>
+                  ) : leaveRequest.status === "rejected" ? (
+                    <span className="text-red-700">Rejected</span>
                   ) : (
-                    <span>{leaveRequest.status}</span>
+                    <span className="!text-orange-500 ">Canceled</span>
                   )}
                 </td>
               </tr>
