@@ -1,21 +1,28 @@
 import { useEffect, useRef, useState } from "react"
 import { GiCancel } from "react-icons/gi"
-import { SiTicktick } from "react-icons/si"
+import { AiTwotoneEdit } from "react-icons/ai"
+
 import toast from "react-hot-toast"
 import Leave from "../services/leave"
+import moment from "moment"
 
 const Leaves = () => {
   const [leaveBalance, setLeaveBalance] = useState(0)
   const [leaves, setLeaves] = useState([])
   const cancelRef = useRef<HTMLDialogElement>(null)
   const editRef = useRef<HTMLDialogElement>(null)
+  const addRef = useRef<HTMLDialogElement>(null)
   const [selectedLeaveId, setSelectedLeaveId] = useState("")
   const [editedLeave, setEditedLeave] = useState({
     id: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: 0,
+    startDate: "",
+    endDate: "",
+    reason: "",
+  })
+  const [leaveRequest, setLeaveRequest] = useState({
+    startDate: "",
+    endDate: "",
+    reason: "",
   })
 
   const fetchLeaves = async () => {
@@ -26,8 +33,18 @@ const Leaves = () => {
       toast.error(error.response?.data.message || error.message)
     }
   }
+  const fetchLeaveBalance = async () => {
+    try {
+      const response = await Leave.getMyLeaveBalance()
+      setLeaveBalance(response.leaveBalance)
+    } catch (error: any) {
+      toast.error(error.response?.data.message || error.message)
+    }
+  }
+
   useEffect(() => {
     fetchLeaves()
+    fetchLeaveBalance()
   }, [])
 
   const handleCancel = async () => {
@@ -52,8 +69,97 @@ const Leaves = () => {
     }
   }
 
+  const handleAdd = async () => {
+    try {
+      await Leave.createLeave(
+        leaveRequest.startDate,
+        leaveRequest.endDate,
+        leaveRequest.reason
+      ).then(() => {
+        toast.success("Leave request created")
+        fetchLeaves()
+      })
+    } catch (error: any) {
+      toast.error(error.response?.data.message || error.message)
+    }
+  }
+
   return (
-    <div>
+    <div className="w-full p-10">
+      <dialog ref={addRef} className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg text-center">Request Leave</h3>
+          <form
+            onSubmit={e => {
+              e.preventDefault()
+              handleAdd()
+              if (addRef.current) {
+                addRef.current.close()
+              }
+            }}
+          >
+            <div className="form-control">
+              <label className="label">
+                start date
+                <input
+                  type="date"
+                  value={leaveRequest.startDate}
+                  onChange={e =>
+                    setLeaveRequest({
+                      ...leaveRequest,
+                      startDate: e.target.value,
+                    })
+                  }
+                  className="input input-bordered"
+                />
+              </label>
+            </div>
+            <div className="form-control">
+              <label className="label">
+                end date
+                <input
+                  type="date"
+                  value={leaveRequest.endDate}
+                  onChange={e =>
+                    setLeaveRequest({
+                      ...leaveRequest,
+                      endDate: e.target.value,
+                    })
+                  }
+                  className="input input-bordered"
+                />
+              </label>
+            </div>
+            <div className="form-control">
+              <label className="label">
+                Reason
+                <input
+                  type="text"
+                  value={leaveRequest.reason}
+                  onChange={e =>
+                    setLeaveRequest({
+                      ...leaveRequest,
+                      reason: e.target.value,
+                    })
+                  }
+                  className="input input-bordered"
+                />
+              </label>
+            </div>
+            <div className="modal-action flex justify-center">
+              <button type="submit" className="btn px-10 btn-primary ">
+                Request
+              </button>
+              <button
+                className="btn px-10"
+                onClick={() => addRef.current?.close()}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </dialog>
       <dialog ref={editRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
           <h3 className="font-bold text-lg  text-center">Edit Leave</h3>
@@ -71,11 +177,43 @@ const Leaves = () => {
                 start date
                 <input
                   type="text"
-                  value={editedLeave.firstName}
+                  value={editedLeave.startDate}
                   onChange={e =>
                     setEditedLeave({
                       ...editedLeave,
-                      firstName: e.target.value,
+                      startDate: e.target.value,
+                    })
+                  }
+                  className="input input-bordered"
+                />
+              </label>
+            </div>
+            <div className="form-control">
+              <label className="label">
+                end date
+                <input
+                  type="text"
+                  value={editedLeave.endDate}
+                  onChange={e =>
+                    setEditedLeave({
+                      ...editedLeave,
+                      endDate: e.target.value,
+                    })
+                  }
+                  className="input input-bordered"
+                />
+              </label>
+            </div>
+            <div className="form-control">
+              <label className="label">
+                Reason
+                <input
+                  type="text"
+                  value={editedLeave.reason}
+                  onChange={e =>
+                    setEditedLeave({
+                      ...editedLeave,
+                      reason: e.target.value,
                     })
                   }
                   className="input input-bordered"
@@ -124,66 +262,81 @@ const Leaves = () => {
         </div>
       </dialog>
 
-      <div className="flex justify-between w-full">
-        <div>
-          <h1 className="text-3xl font-bold w-fit">Leaves</h1>
-          <h3>{leaveBalance}</h3>
+      <div className="flex justify-between w-full items-center">
+        <div className="flex items-end gap-5">
+          <h1 className="text-3xl font-bold w-fit">Leave Balance:</h1>
+          <h3 className="text-2xl font-semibold">{leaveBalance}</h3>
         </div>
+        <button
+          className="btn btn-primary"
+          onClick={() => {
+            if (addRef.current) {
+              addRef.current.showModal()
+            }
+          }}
+        >
+          Request Leave
+        </button>
       </div>
       <div className="divider"></div>
+      <h1 className="text-3xl font-bold text-center mb-5">Leaves</h1>
 
       {leaves.length < 1 ? (
         <p className="text-center text-2xl">No Leave Requests found</p>
       ) : (
-        <div className="overflow-x-auto">
-          <div>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Email</th>
-                  <th>Period</th>
-                  <th>Reason</th>
-                  <th className="text-center">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {leaves.map((leave: any, index: number) => (
-                  <tr tabIndex={index} key={index} className="hover">
-                    <th>{index + 1}</th>
-                    <td>{leave.period}</td>
-                    <td>{leave.reason}</td>
-                    <td>{leave.status}</td>
-                    <td className="flex h-full justify-center gap-3 text-lg">
-                      <SiTicktick
-                        className="text-green-700"
-                        onClick={() => {
-                          setSelectedLeaveId(leave.id)
-                          if (approveRef.current) {
-                            approveRef.current.showModal()
-                          }
-                        }}
-                      />
-                      <button>
-                        <GiCancel
-                          className="text-red-700"
-                          onClick={() => {
-                            setSelectedLeaveId(user.id)
-                            if (rejectRef.current) {
-                              rejectRef.current.showModal()
-                            }
-                          }}
-                        />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <table className="table w-full">
+          <thead>
+            <tr>
+              <th></th>
+              <th>startDate</th>
+              <th>endDate</th>
+              <th>Reason</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {leaves.map((leave: any, index: number) => (
+              <tr tabIndex={index} key={index} className="hover">
+                <th>{index + 1}</th>
+                <td>{moment(leave.startDate).format("DD/MM/YYYY")}</td>
+                <td>{moment(leave.endDate).format("DD/MM/YYYY")}</td>
+                <td>{leave.reason}</td>done
+                <td>{leave.status}</td>
+                <td className="flex h-full justify-center gap-3 text-lg">
+                  <button>
+                    <AiTwotoneEdit
+                      className="text-green-700"
+                      onClick={() => {
+                        setEditedLeave({
+                          id: leave.id,
+                          startDate: leave.startDate,
+                          endDate: leave.endDate,
+                          reason: leave.reason,
+                        })
+
+                        if (editRef.current) {
+                          editRef.current.showModal()
+                        }
+                      }}
+                    />
+                  </button>
+                  <button>
+                    <GiCancel
+                      className="text-red-700"
+                      onClick={() => {
+                        setSelectedLeaveId(leave.id)
+                        if (cancelRef.current) {
+                          cancelRef.current.showModal()
+                        }
+                      }}
+                    />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </div>
   )

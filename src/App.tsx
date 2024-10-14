@@ -8,6 +8,7 @@ import Users from "./pages/users"
 import Sidebar from "./components/Sidebar"
 import ProtectedRoute from "./utils/protectedRoute"
 import LeaveRequests from "./pages/LeaveRequests"
+import Leaves from "./pages/Leaves"
 
 function Layout() {
   return (
@@ -51,7 +52,7 @@ function App() {
             { path: "/admin", element: <div>admin page</div> },
             { path: "/users", element: <Users /> },
             { path: "/me", element: <div>User Detail</div> },
-            { path: "/leaves", element: <div>Leave</div> },
+            { path: "/leaves", element: <Leaves /> },
             { path: "/leaveRequests", element: <LeaveRequests /> },
             { path: "/unauthorized", element: <div>Unauthorized</div> },
           ],

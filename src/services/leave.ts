@@ -12,7 +12,7 @@ const Leave = {
 
   async getMyLeaves() {
     try {
-      const response = await client.get("/leave/me")
+      const response = await client.get("/leave/my")
       return response.data
     } catch (error) {
       throw error
@@ -21,7 +21,7 @@ const Leave = {
 
   async getMyLeaveBalance() {
     try {
-      const response = await client.get("/leave/balance")
+      const response = await client.get("user/leave/balance")
       return response.data
     } catch (error) {
       throw error
