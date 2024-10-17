@@ -59,7 +59,7 @@ const Navbar = () => {
             </div>
           </div>
         ) : (
-          <div className="flex-none gap-2">
+          <div className="flex gap-4">
             <NavLink
               to="/login"
               className={({ isActive }) =>
