@@ -176,7 +176,7 @@ const Leaves = () => {
               <label className="label">
                 start date
                 <input
-                  type="text"
+                  type="date"
                   value={editedLeave.startDate}
                   onChange={e =>
                     setEditedLeave({
@@ -192,7 +192,7 @@ const Leaves = () => {
               <label className="label">
                 end date
                 <input
-                  type="text"
+                  type="date"
                   value={editedLeave.endDate}
                   onChange={e =>
                     setEditedLeave({
@@ -237,7 +237,7 @@ const Leaves = () => {
       <dialog ref={cancelRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
           <h3 className="font-bold text-lg text-center">
-            Are you Sure you want to reject this leave request?
+            Are you Sure you want to cancel this leave request?
           </h3>
           <div className="flex "></div>
           <div className="modal-action flex justify-center">
@@ -278,14 +278,14 @@ const Leaves = () => {
           Request Leave
         </button>
       </div>
-      <div className="divider"></div>
-      <h1 className="text-3xl font-bold text-center mb-5">Leaves</h1>
+      <div className="border-b-[1px] my-6"></div>
+      <h1 className="text-3xl font-bold text-center mb-10">Leaves</h1>
 
       {leaves.length < 1 ? (
         <p className="text-center text-2xl">No Leave Requests found</p>
       ) : (
-        <table className="table w-full">
-          <thead>
+        <table className="table table-zebra w-full">
+          <thead className="bg-primary-content text-primary">
             <tr>
               <th></th>
               <th>startDate</th>
@@ -297,14 +297,24 @@ const Leaves = () => {
           </thead>
           <tbody>
             {leaves.map((leave: any, index: number) => (
-              <tr tabIndex={index} key={index} className="hover">
+              <tr tabIndex={index} key={index} className="hover ">
                 <th>{index + 1}</th>
                 <td>{moment(leave.startDate).format("DD/MM/YYYY")}</td>
                 <td>{moment(leave.endDate).format("DD/MM/YYYY")}</td>
                 <td>{leave.reason}</td>done
-                <td>{leave.status}</td>
+                <td className="font-semibold">
+                  {leave.status === "Approved" ? (
+                    <span className="text-green-600">Approved</span>
+                  ) : leave.status === "Rejected" ? (
+                    <span className="text-red-600">Rejected</span>
+                  ) : leave.status === "Canceled" ? (
+                    <span className="!text-orange-500 ">Canceled</span>
+                  ) : (
+                    <span className="!text-blue-700 ">Pending</span>
+                  )}
+                </td>
                 <td className="flex h-full justify-center gap-3 text-lg">
-                  <button>
+                  <button className="tooltip" data-tip="Edit">
                     <AiTwotoneEdit
                       className="text-green-700"
                       onClick={() => {
@@ -321,9 +331,9 @@ const Leaves = () => {
                       }}
                     />
                   </button>
-                  <button>
+                  <button className="tooltip" data-tip="Cancel">
                     <GiCancel
-                      className="text-red-700"
+                      className="!text-orange-500"
                       onClick={() => {
                         setSelectedLeaveId(leave.id)
                         if (cancelRef.current) {

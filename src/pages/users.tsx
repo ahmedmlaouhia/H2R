@@ -264,12 +264,12 @@ const Users = () => {
           </div>
         </div>
       </dialog>
-      <h1 className="text-3xl font-bold text-center">HRs</h1>
+      <h1 className="text-3xl font-bold mb-10 text-center">HRs</h1>
       {HRs.length < 1 ? (
         <p className="text-center text-2xl">No HRs found</p>
       ) : (
-        <table className="table">
-          <thead>
+        <table className="table table-zebra">
+          <thead className="bg-primary-content text-primary">
             <tr>
               <th></th>
               <th>First Name</th>
@@ -332,13 +332,13 @@ const Users = () => {
           </tbody>
         </table>
       )}
-      <div className="divider"></div>
-      <h1 className="text-3xl font-bold text-center">Employees</h1>
+      <div className="border-b-[1px] my-6"></div>
+      <h1 className="text-3xl mb-10 font-bold text-center">Employees</h1>
       {employees.length < 1 ? (
         <p className="text-center text-2xl">No Employees found</p>
       ) : (
-        <table className="table">
-          <thead>
+        <table className="table table-zebra">
+          <thead className="bg-primary-content text-primary">
             <tr>
               <th></th>
               <th>First Name</th>

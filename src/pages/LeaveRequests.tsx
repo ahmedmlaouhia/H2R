@@ -100,14 +100,13 @@ const LeaveRequests = () => {
         </div>
       </dialog>
 
-      <h1 className="text-3xl font-bold text-center">Leave Requests</h1>
-      <div className="divider"></div>
+      <h1 className="text-3xl font-bold mb-10 text-center">Leave Requests</h1>
 
       {leaveRequests.length < 1 ? (
         <p className="text-center text-2xl">No Leave Requests found</p>
       ) : (
-        <table className="table">
-          <thead>
+        <table className="table table-zebra">
+          <thead className="bg-primary-content text-primary">
             <tr>
               <th></th>
               <th>First Name</th>
@@ -170,7 +169,7 @@ const LeaveRequests = () => {
                     </>
                   ) : leaveRequest.status === "Approved" ? (
                     <span className="text-green-700">Approved</span>
-                  ) : leaveRequest.status === "rejected" ? (
+                  ) : leaveRequest.status === "Rejected" ? (
                     <span className="text-red-700">Rejected</span>
                   ) : (
                     <span className="!text-orange-500 ">Canceled</span>

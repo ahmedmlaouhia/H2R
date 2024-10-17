@@ -1,17 +1,38 @@
-import { Link } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 
 const Sidebar = () => {
   return (
-    <div className="flex flex-col min-w-[17rem] gap-10 h-full px-10 py-20 bg-base-200 shadow-md text-base-200-content ">
-      <Link to="/users" className="btn w-full px-10 shadow-none">
+    <div className="flex flex-col min-w-52 gap-10 h-full px-7 py-20 border-r-[1px] border-base-300">
+      <NavLink
+        to="/users"
+        className={({ isActive }) =>
+          isActive
+            ? "btn bg-primary text-primary-content shadow-none hover:bg-primary !border-none"
+            : "btn bg-transparent hover:text-primary-content hover:bg-primary shadow-none !border-none"
+        }
+      >
         Users
-      </Link>
-      <Link to="/leaves" className="btn w-full px-10 shadow-none">
+      </NavLink>
+      <NavLink
+        to="/leaves"
+        className={({ isActive }) =>
+          isActive
+            ? "btn bg-primary text-primary-content shadow-none hover:bg-primary !border-none"
+            : "btn bg-transparent hover:text-primary-content hover:bg-primary shadow-none !border-none"
+        }
+      >
         Leaves
-      </Link>
-      <Link to="/leaveRequests" className="btn w-full px-10 shadow-none">
+      </NavLink>
+      <NavLink
+        to="/leaveRequests"
+        className={({ isActive }) =>
+          isActive
+            ? "btn bg-primary text-primary-content shadow-none hover:bg-primary !border-none"
+            : "btn bg-transparent hover:text-primary-content hover:bg-primary shadow-none !border-none"
+        }
+      >
         Leave Requests
-      </Link>
+      </NavLink>
     </div>
   )
 }
