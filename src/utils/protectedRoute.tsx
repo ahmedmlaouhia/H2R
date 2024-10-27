@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-
+import { useContext } from "react"
+import Authcontext from "./context"
 interface ProtectedRouteProps {
   children: JSX.Element
   allowedRoles: string[]
@@ -11,7 +12,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 }) => {
   const navigate = useNavigate()
   const isAuthenticated = !!localStorage.getItem("token")
-  const userRole = localStorage.getItem("role")
+  const context = useContext(Authcontext)
+  const userRole = context.user.role
+
   useEffect(() => {
     if (!isAuthenticated) {
       navigate("/login")

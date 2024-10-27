@@ -30,22 +30,17 @@ function Main() {
   )
 }
 
-type User = {
-  name: string
-  role: string
-  isAuth: boolean
-}
-
 function App() {
+  const userr = localStorage.getItem("user") || "{}"
   const [user, setUser] = useState({
-    name: "",
-    role: "",
-    isAuth: false,
+    name: JSON.parse(userr).firstName || "",
+    role: JSON.parse(userr).role || "",
+    isAuth: localStorage.getItem("token") ? true : false,
   })
 
-  const login = (user: User) => {
+  const login = (user: any) => {
     setUser({
-      name: user.name,
+      name: user.firstName,
       role: user.role,
       isAuth: user.isAuth,
     })

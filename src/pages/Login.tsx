@@ -20,8 +20,14 @@ const Login = () => {
       await auth.login(email, password).then(res => {
         toast.success(res.message)
         localStorage.setItem("token", res.token)
-        context.login(res.user)
-        navigate("/")
+        localStorage.setItem("user", JSON.stringify(res.result))
+        context.login(res.result)
+        const role = res.result.role
+        role == "Employee"
+          ? navigate("/leaves")
+          : role == "HR"
+          ? navigate("/leaverequests")
+          : navigate("/users")
       })
     } catch (error: any) {
       toast.error(error.response?.data.message || error.message)
