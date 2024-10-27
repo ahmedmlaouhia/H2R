@@ -2,22 +2,30 @@ import toast from "react-hot-toast"
 import { NavLink, useNavigate } from "react-router-dom"
 import { RxAvatar } from "react-icons/rx"
 import { RxHamburgerMenu } from "react-icons/rx"
+import { useContext } from "react"
+import Authcontext from "../utils/context"
 
 const Navbar = () => {
   const isLoggedIn = localStorage.getItem("token")
-  const user = JSON.parse(localStorage.getItem("user") || "{}")
+  const context = useContext(Authcontext)
+  const user = context.user
   const navigate = useNavigate()
 
   const handleLogout = () => {
     localStorage.removeItem("token")
-    localStorage.removeItem("user")
+    context.logout()
     toast.success("Logged out successfully")
     navigate("/login")
   }
 
   return (
     <nav className="navbar bg-base-100 border-b-[1px] border-base-300 justify-between !py-0 !h-fit px-20">
-      <img src="hrlogo.png" alt="navlogo" className="h-10" />
+      <img
+        onClick={() => navigate("/")}
+        src="hrlogo.png"
+        alt="navlogo"
+        className="h-10 cursor-pointer"
+      />
       <div>
         {isLoggedIn ? (
           <div className="!h-full">
@@ -29,7 +37,7 @@ const Navbar = () => {
               >
                 <RxAvatar className="h-10 w-10" />
                 <div className="flex flex-col">
-                  <div className="font-bold">{user.firstName}</div>
+                  <div className="font-bold">{user.name}</div>
                   <div className="text-xs ">{user.role}</div>
                 </div>
                 <RxHamburgerMenu className="text-2xl" />

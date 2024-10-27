@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { toast } from "react-hot-toast"
 import auth from "../services/auth"
 import { useNavigate } from "react-router-dom"
+import Authcontext from "../utils/context"
 
 const Login = () => {
+  const context = useContext(Authcontext)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
@@ -18,7 +20,7 @@ const Login = () => {
       await auth.login(email, password).then(res => {
         toast.success(res.message)
         localStorage.setItem("token", res.token)
-        localStorage.setItem("user", JSON.stringify(res.result))
+        context.login(res.user)
         navigate("/")
       })
     } catch (error: any) {

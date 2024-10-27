@@ -9,6 +9,8 @@ import Sidebar from "./components/Sidebar"
 import ProtectedRoute from "./utils/protectedRoute"
 import LeaveRequests from "./pages/LeaveRequests"
 import Leaves from "./pages/Leaves"
+import Authcontext from "./utils/context"
+import { useState } from "react"
 
 function Layout() {
   return (
@@ -28,7 +30,35 @@ function Main() {
   )
 }
 
+type User = {
+  name: string
+  role: string
+  isAuth: boolean
+}
+
 function App() {
+  const [user, setUser] = useState({
+    name: "",
+    role: "",
+    isAuth: false,
+  })
+
+  const login = (user: User) => {
+    setUser({
+      name: user.name,
+      role: user.role,
+      isAuth: user.isAuth,
+    })
+  }
+
+  const logout = () => {
+    setUser({
+      name: "",
+      role: "",
+      isAuth: false,
+    })
+  }
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -50,10 +80,31 @@ function App() {
             },
             { path: "/hr", element: <div>HR page</div> },
             { path: "/admin", element: <div>admin page</div> },
-            { path: "/users", element: <Users /> },
+            {
+              path: "/users",
+              element: (
+                <ProtectedRoute allowedRoles={["Admin"]}>
+                  <Users />
+                </ProtectedRoute>
+              ),
+            },
             { path: "/me", element: <div>User Detail</div> },
-            { path: "/leaves", element: <Leaves /> },
-            { path: "/leaveRequests", element: <LeaveRequests /> },
+            {
+              path: "/leaves",
+              element: (
+                <ProtectedRoute allowedRoles={["Employee"]}>
+                  <Leaves />
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: "/leaveRequests",
+              element: (
+                <ProtectedRoute allowedRoles={["Admin", "HR"]}>
+                  <LeaveRequests />
+                </ProtectedRoute>
+              ),
+            },
             { path: "/unauthorized", element: <div>Unauthorized</div> },
           ],
         },
@@ -63,8 +114,10 @@ function App() {
   ])
   return (
     <>
-      <Toaster />
-      <RouterProvider router={router} />
+      <Authcontext.Provider value={{ user, login, logout }}>
+        <Toaster />
+        <RouterProvider router={router} />
+      </Authcontext.Provider>
     </>
   )
 }

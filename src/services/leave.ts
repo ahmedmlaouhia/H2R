@@ -3,7 +3,7 @@ import client from "../utils/axios"
 const Leave = {
   async getLeaves() {
     try {
-      const response = await client.get("/leave")
+      const response = await client().get("/leave")
       return response.data
     } catch (error) {
       throw error
@@ -12,7 +12,7 @@ const Leave = {
 
   async getMyLeaves() {
     try {
-      const response = await client.get("/leave/my")
+      const response = await client().get("/leave/my")
       return response.data
     } catch (error) {
       throw error
@@ -21,7 +21,7 @@ const Leave = {
 
   async getMyLeaveBalance() {
     try {
-      const response = await client.get("user/leave/balance")
+      const response = await client().get("user/leave/balance")
       return response.data
     } catch (error) {
       throw error
@@ -30,7 +30,7 @@ const Leave = {
 
   async createLeave(startDate: string, endDate: string, reason: string) {
     try {
-      const response = await client.post("/leave/create", {
+      const response = await client().post("/leave/create", {
         startDate,
         endDate,
         reason,
@@ -43,7 +43,7 @@ const Leave = {
 
   async cancelLeave(id: string) {
     try {
-      const response = await client.delete(`/leave/${id}`)
+      const response = await client().delete(`/leave/${id}`)
       return response.data
     } catch (error) {
       throw error
@@ -52,7 +52,7 @@ const Leave = {
 
   async updateLeave(id: string, data: any) {
     try {
-      const response = await client.put(`/leave/${id}`, data)
+      const response = await client().put(`/leave/${id}`, data)
       return response.data
     } catch (error) {
       throw error
@@ -61,7 +61,7 @@ const Leave = {
 
   async approveLeave(id: string) {
     try {
-      await client.put(`/leave/approve/${id}`)
+      await client().put(`/leave/approve/${id}`)
     } catch (error) {
       throw error
     }
@@ -69,7 +69,7 @@ const Leave = {
 
   async rejectLeave(id: string) {
     try {
-      const response = await client.put(`/leave/reject/${id}`)
+      const response = await client().put(`/leave/reject/${id}`)
       return response.data
     } catch (error) {
       throw error
