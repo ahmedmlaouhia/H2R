@@ -43,16 +43,16 @@ const Leave = {
 
   async cancelLeave(id: string) {
     try {
-      const response = await client().delete(`/leave/${id}`)
+      const response = await client().put(`leave/cancel/${id}`)
       return response.data
     } catch (error) {
       throw error
     }
   },
 
-  async updateLeave(id: string, data: any) {
+  async updateLeave(data: any) {
     try {
-      const response = await client().put(`/leave/${id}`, data)
+      const response = await client().put(`/leave/edit/${data.id}`, data)
       return response.data
     } catch (error) {
       throw error

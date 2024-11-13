@@ -60,7 +60,7 @@ const Leaves = () => {
 
   const handleEdit = async () => {
     try {
-      await Leave.updateLeave(selectedLeaveId, editedLeave).then(() => {
+      await Leave.updateLeave(editedLeave).then(() => {
         toast.success("Leave request updated")
         fetchLeaves()
       })
@@ -77,6 +77,11 @@ const Leaves = () => {
         leaveRequest.reason
       ).then(() => {
         toast.success("Leave request created")
+        setLeaveRequest({
+          startDate: "",
+          endDate: "",
+          reason: "",
+        })
         fetchLeaves()
       })
     } catch (error: any) {
@@ -89,15 +94,7 @@ const Leaves = () => {
       <dialog ref={addRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
           <h3 className="font-bold text-lg text-center">Request Leave</h3>
-          <form
-            onSubmit={e => {
-              e.preventDefault()
-              handleAdd()
-              if (addRef.current) {
-                addRef.current.close()
-              }
-            }}
-          >
+          <div>
             <div className="form-control">
               <label className="label">
                 start date
@@ -147,37 +144,44 @@ const Leaves = () => {
               </label>
             </div>
             <div className="modal-action flex justify-center">
-              <button type="submit" className="btn px-10 btn-primary ">
+              <button
+                onClick={() => {
+                  handleAdd()
+                  if (addRef.current) {
+                    addRef.current.close()
+                  }
+                }}
+                className="btn px-10 btn-primary "
+              >
                 Request
               </button>
               <button
                 className="btn px-10"
-                onClick={() => addRef.current?.close()}
+                onClick={() => {
+                  setLeaveRequest({
+                    startDate: "",
+                    endDate: "",
+                    reason: "",
+                  })
+                  addRef.current?.close()
+                }}
               >
                 Cancel
               </button>
             </div>
-          </form>
+          </div>
         </div>
       </dialog>
       <dialog ref={editRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
           <h3 className="font-bold text-lg  text-center">Edit Leave</h3>
-          <form
-            onSubmit={e => {
-              e.preventDefault()
-              handleEdit()
-              if (editRef.current) {
-                editRef.current.close()
-              }
-            }}
-          >
+          <div>
             <div className="form-control">
               <label className="label">
                 start date
                 <input
                   type="date"
-                  value={editedLeave.startDate}
+                  value={moment(editedLeave.startDate).format("YYYY-MM-DD")}
                   onChange={e =>
                     setEditedLeave({
                       ...editedLeave,
@@ -193,7 +197,7 @@ const Leaves = () => {
                 end date
                 <input
                   type="date"
-                  value={editedLeave.endDate}
+                  value={moment(editedLeave.endDate).format("YYYY-MM-DD")}
                   onChange={e =>
                     setEditedLeave({
                       ...editedLeave,
@@ -221,7 +225,15 @@ const Leaves = () => {
               </label>
             </div>
             <div className="modal-action flex justify-center">
-              <button type="submit" className="btn px-10 btn-primary ">
+              <button
+                onClick={() => {
+                  handleEdit()
+                  if (editRef.current) {
+                    editRef.current.close()
+                  }
+                }}
+                className="btn px-10 btn-primary "
+              >
                 Save
               </button>
               <button
@@ -231,7 +243,7 @@ const Leaves = () => {
                 Cancel
               </button>
             </div>
-          </form>
+          </div>
         </div>
       </dialog>
       <dialog ref={cancelRef} className="modal modal-bottom sm:modal-middle">
@@ -239,7 +251,6 @@ const Leaves = () => {
           <h3 className="font-bold text-lg text-center">
             Are you Sure you want to cancel this leave request?
           </h3>
-          <div className="flex "></div>
           <div className="modal-action flex justify-center">
             <button
               className="btn btn-primary px-10"
@@ -301,7 +312,7 @@ const Leaves = () => {
                 <th>{index + 1}</th>
                 <td>{moment(leave.startDate).format("DD/MM/YYYY")}</td>
                 <td>{moment(leave.endDate).format("DD/MM/YYYY")}</td>
-                <td>{leave.reason}</td>done
+                <td>{leave.reason}</td>
                 <td className="font-semibold">
                   {leave.status === "Approved" ? (
                     <span className="text-green-600">Approved</span>

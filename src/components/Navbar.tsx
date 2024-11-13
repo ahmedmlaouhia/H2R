@@ -92,7 +92,7 @@ const Navbar = () => {
           </div>
         )}
         <label className="swap swap-rotate ml-10">
-          <input type="checkbox" className="theme-controller" value="dark" />
+          <input type="checkbox" className="theme-controller" value="light" />
           <svg
             className="swap-on h-7 w-7 fill-current"
             xmlns="http://www.w3.org/2000/svg"
