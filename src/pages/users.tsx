@@ -8,8 +8,10 @@ const Users = () => {
   const editRef = useRef<HTMLDialogElement>(null)
   const makeHRRef = useRef<HTMLDialogElement>(null)
   const makeEmployeeRef = useRef<HTMLDialogElement>(null)
-
   const [employees, setEmployees] = useState([])
+  const [HRs, setHRs] = useState([])
+  const [filteredEmployees, setFilteredEmployees] = useState([])
+  const [filteredHRs, setFilteredHRs] = useState([])
   const [editedUser, setEditedUser] = useState({
     id: "",
     firstName: "",
@@ -17,7 +19,6 @@ const Users = () => {
     email: "",
     phone: 0,
   })
-  const [HRs, setHRs] = useState([])
   const [makeHRId, setMakeHRId] = useState("")
   const [makeEmployeeId, setMakeEmployeeId] = useState("")
   const [deleteId, setDeleteId] = useState("")
@@ -25,6 +26,7 @@ const Users = () => {
     try {
       const response = await user.getEmployees()
       setEmployees(response.data)
+      setFilteredEmployees(response.data)
     } catch (error: any) {
       console.log(error.response?.data.message || error.message)
     }
@@ -34,6 +36,7 @@ const Users = () => {
     try {
       const response = await user.getHR()
       setHRs(response.data)
+      setFilteredHRs(response.data)
     } catch (error: any) {
       console.log(error.response?.data.message || error.message)
     }
@@ -87,21 +90,121 @@ const Users = () => {
       toast.error(error.response?.data.message || error.message)
     }
   }
+  const filter = useRef<HTMLDialogElement>(null)
+  const [filterData, setFilterData] = useState({
+    stringFilter: "",
+    phoneFilter: "",
+  })
+
+  const handleFilter = () => {
+    const { stringFilter, phoneFilter } = filterData
+
+    // Filter employees based on name, email, and phone
+    const filteredEmployeesData = employees.filter((employee: any) => {
+      const matchesString =
+        stringFilter === "" ||
+        employee.firstName.includes(stringFilter) ||
+        employee.lastName.includes(stringFilter) ||
+        employee.email.includes(stringFilter)
+
+      const matchesPhone =
+        phoneFilter === "" || employee.phone.includes(phoneFilter)
+
+      return matchesString && matchesPhone
+    })
+
+    // Filter HRs based on name, email, and phone
+    const filteredHRsData = HRs.filter((hr: any) => {
+      const matchesString =
+        stringFilter === "" ||
+        hr.firstName.includes(stringFilter) ||
+        hr.lastName.includes(stringFilter) ||
+        hr.email.includes(stringFilter)
+
+      const matchesPhone = phoneFilter === "" || hr.phone.includes(phoneFilter)
+
+      return matchesString && matchesPhone
+    })
+
+    // Update the filtered states
+    setFilteredEmployees(filteredEmployeesData)
+    setFilteredHRs(filteredHRsData)
+  }
+
+  console.log("employees: ", employees)
+  console.log("HRs: ", HRs)
+  console.log("filteredEmployees: ", filteredEmployees)
+  console.log("filteredHRs: ", filteredHRs)
 
   return (
     <div className="px-10 py-10 h-full w-full flex flex-col gap-5">
+      <dialog ref={filter} className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg text-center">Filter</h3>
+          <div>
+            <div className="form-control">
+              <label className="label">
+                name, email
+                <input
+                  value={filterData.stringFilter}
+                  onChange={e =>
+                    setFilterData({
+                      ...filterData,
+                      stringFilter: e.target.value,
+                    })
+                  }
+                  className="input input-bordered"
+                />
+              </label>
+            </div>
+            <div className="form-control">
+              <label className="label">
+                phone
+                <input
+                  value={filterData.phoneFilter}
+                  onChange={e =>
+                    setFilterData({
+                      ...filterData,
+                      phoneFilter: e.target.value,
+                    })
+                  }
+                  className="input input-bordered"
+                />
+              </label>
+            </div>
+
+            <div className="modal-action flex justify-center">
+              <button
+                onClick={() => {
+                  handleFilter()
+                  filter.current?.close()
+                }}
+                className="btn px-10 btn-primary "
+              >
+                Filter
+              </button>
+              <button
+                className="btn px-10"
+                onClick={() => {
+                  setFilterData({
+                    stringFilter: "",
+                    phoneFilter: "",
+                  })
+                  setFilteredEmployees(employees)
+                  setFilteredHRs(HRs)
+                  filter.current?.close()
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </dialog>
       <dialog ref={editRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
           <h3 className="font-bold text-lg  text-center">Edit User</h3>
-          <form
-            onSubmit={e => {
-              e.preventDefault()
-              handleEdit()
-              if (editRef.current) {
-                editRef.current.close()
-              }
-            }}
-          >
+          <div>
             <div className="form-control">
               <label className="label">
                 <span className="label-text">First Name</span>
@@ -166,7 +269,17 @@ const Users = () => {
               />
             </div>
             <div className="modal-action flex justify-center">
-              <button type="submit" className="btn px-10 btn-primary ">
+              <button
+                onClick={e => {
+                  e.preventDefault()
+                  handleEdit()
+                  if (editRef.current) {
+                    editRef.current.close()
+                  }
+                }}
+                type="submit"
+                className="btn px-10 btn-primary "
+              >
                 Save
               </button>
               <button
@@ -176,7 +289,7 @@ const Users = () => {
                 Cancel
               </button>
             </div>
-          </form>
+          </div>
         </div>
       </dialog>
       <dialog
@@ -264,6 +377,29 @@ const Users = () => {
           </div>
         </div>
       </dialog>
+      <div className="flex gap-5">
+        <button
+          className="btn btn-primary w-fit px-10"
+          onClick={() => {
+            if (filter.current) filter.current.showModal()
+          }}
+        >
+          Filter
+        </button>
+        <button
+          className="btn btn-ghost w-fit px-10"
+          onClick={() => {
+            setFilterData({
+              stringFilter: "",
+              phoneFilter: "",
+            })
+            setFilteredEmployees(employees)
+            setFilteredHRs(HRs)
+          }}
+        >
+          Reset
+        </button>
+      </div>
       <h1 className="text-3xl font-bold mb-10 text-center">HRs</h1>
       {HRs.length < 1 ? (
         <p className="text-center text-2xl">No HRs found</p>
@@ -280,55 +416,57 @@ const Users = () => {
             </tr>
           </thead>
           <tbody>
-            {HRs.map((user: any, index: number) => (
-              <tr tabIndex={index} key={index} className="hover">
-                <th>{index + 1}</th>
-                <td>{user.firstName}</td>
-                <td>{user.lastName}</td>
-                <td>{user.email}</td>
-                <td>{user.phone}</td>
-                <td className="flex h-full justify-center gap-3 text-lg">
-                  <button
-                    className="text-green-700"
-                    onClick={() => {
-                      setEditedUser({
-                        id: user.id,
-                        firstName: user.firstName,
-                        lastName: user.lastName,
-                        email: user.email,
-                        phone: user.phone,
-                      })
-                      if (editRef.current) {
-                        editRef.current.showModal()
-                      }
-                    }}
-                  >
-                    <AiTwotoneEdit />
-                  </button>
-                  <button>
-                    <IoTrashOutline
-                      className="text-red-700"
+            {(filteredHRs.length < 1 ? filteredHRs : HRs).map(
+              (user: any, index: number) => (
+                <tr tabIndex={index} key={index} className="hover">
+                  <th>{index + 1}</th>
+                  <td>{user.firstName}</td>
+                  <td>{user.lastName}</td>
+                  <td>{user.email}</td>
+                  <td>{user.phone}</td>
+                  <td className="flex h-full justify-center gap-3 text-lg">
+                    <button
+                      className="text-green-700"
                       onClick={() => {
-                        setDeleteId(user.id)
-                        if (deleteRef.current) {
-                          deleteRef.current.showModal()
+                        setEditedUser({
+                          id: user.id,
+                          firstName: user.firstName,
+                          lastName: user.lastName,
+                          email: user.email,
+                          phone: user.phone,
+                        })
+                        if (editRef.current) {
+                          editRef.current.showModal()
                         }
                       }}
-                    />
-                  </button>
-                  <button
-                    onClick={() => {
-                      setMakeEmployeeId(user.id)
-                      if (makeEmployeeRef.current) {
-                        makeEmployeeRef.current.showModal()
-                      }
-                    }}
-                  >
-                    <span>Make Employee</span>
-                  </button>
-                </td>
-              </tr>
-            ))}
+                    >
+                      <AiTwotoneEdit />
+                    </button>
+                    <button>
+                      <IoTrashOutline
+                        className="text-red-700"
+                        onClick={() => {
+                          setDeleteId(user.id)
+                          if (deleteRef.current) {
+                            deleteRef.current.showModal()
+                          }
+                        }}
+                      />
+                    </button>
+                    <button
+                      onClick={() => {
+                        setMakeEmployeeId(user.id)
+                        if (makeEmployeeRef.current) {
+                          makeEmployeeRef.current.showModal()
+                        }
+                      }}
+                    >
+                      <span>Make Employee</span>
+                    </button>
+                  </td>
+                </tr>
+              )
+            )}
           </tbody>
         </table>
       )}
@@ -349,7 +487,7 @@ const Users = () => {
             </tr>
           </thead>
           <tbody>
-            {employees.map((user: any, index: number) => (
+            {filteredEmployees.map((user: any, index: number) => (
               <tr tabIndex={index} key={index} className="hover">
                 <th>{index + 1}</th>
                 <td>{user.firstName}</td>
