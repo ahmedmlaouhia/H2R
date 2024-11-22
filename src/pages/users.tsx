@@ -90,7 +90,6 @@ const Users = () => {
       toast.error(error.response?.data.message || error.message)
     }
   }
-  const filter = useRef<HTMLDialogElement>(null)
   const [filterData, setFilterData] = useState({
     stringFilter: "",
     phoneFilter: "",
@@ -131,76 +130,12 @@ const Users = () => {
     setFilteredHRs(filteredHRsData)
   }
 
-  console.log("employees: ", employees)
-  console.log("HRs: ", HRs)
-  console.log("filteredEmployees: ", filteredEmployees)
-  console.log("filteredHRs: ", filteredHRs)
+  useEffect(() => {
+    handleFilter()
+  }, [filterData, employees, HRs])
 
   return (
     <div className="px-10 py-10 h-full w-full flex flex-col gap-5">
-      <dialog ref={filter} className="modal modal-bottom sm:modal-middle">
-        <div className="modal-box">
-          <h3 className="font-bold text-lg text-center">Filter</h3>
-          <div>
-            <div className="form-control">
-              <label className="label">
-                name, email
-                <input
-                  value={filterData.stringFilter}
-                  onChange={e =>
-                    setFilterData({
-                      ...filterData,
-                      stringFilter: e.target.value,
-                    })
-                  }
-                  className="input input-bordered"
-                />
-              </label>
-            </div>
-            <div className="form-control">
-              <label className="label">
-                phone
-                <input
-                  value={filterData.phoneFilter}
-                  onChange={e =>
-                    setFilterData({
-                      ...filterData,
-                      phoneFilter: e.target.value,
-                    })
-                  }
-                  className="input input-bordered"
-                />
-              </label>
-            </div>
-
-            <div className="modal-action flex justify-center">
-              <button
-                onClick={() => {
-                  handleFilter()
-                  filter.current?.close()
-                }}
-                className="btn px-10 btn-primary "
-              >
-                Filter
-              </button>
-              <button
-                className="btn px-10"
-                onClick={() => {
-                  setFilterData({
-                    stringFilter: "",
-                    phoneFilter: "",
-                  })
-                  setFilteredEmployees(employees)
-                  setFilteredHRs(HRs)
-                  filter.current?.close()
-                }}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      </dialog>
       <dialog ref={editRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
           <h3 className="font-bold text-lg  text-center">Edit User</h3>
@@ -377,25 +312,38 @@ const Users = () => {
           </div>
         </div>
       </dialog>
-      <div className="flex gap-5">
+      <div className="flex items-center gap-5">
+        name, email
+        <input
+          type="text"
+          value={filterData.stringFilter}
+          onChange={e =>
+            setFilterData({
+              ...filterData,
+              stringFilter: e.target.value,
+            })
+          }
+          className="input input-bordered"
+        />
+        phone
+        <input
+          value={filterData.phoneFilter}
+          onChange={e =>
+            setFilterData({
+              ...filterData,
+              phoneFilter: e.target.value,
+            })
+          }
+          className="input input-bordered"
+        />
         <button
-          className="btn btn-primary w-fit px-10"
-          onClick={() => {
-            if (filter.current) filter.current.showModal()
-          }}
-        >
-          Filter
-        </button>
-        <button
-          className="btn btn-ghost w-fit px-10"
-          onClick={() => {
+          className="btn btn-ghost px-10"
+          onClick={() =>
             setFilterData({
               stringFilter: "",
               phoneFilter: "",
             })
-            setFilteredEmployees(employees)
-            setFilteredHRs(HRs)
-          }}
+          }
         >
           Reset
         </button>

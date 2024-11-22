@@ -9,6 +9,7 @@ import moment from "moment"
 const Leaves = () => {
   const [leaveBalance, setLeaveBalance] = useState(0)
   const [leaves, setLeaves] = useState([])
+  const [filteredLeaves, setFilteredLeaves] = useState(leaves)
   const cancelRef = useRef<HTMLDialogElement>(null)
   const editRef = useRef<HTMLDialogElement>(null)
   const addRef = useRef<HTMLDialogElement>(null)
@@ -89,6 +90,53 @@ const Leaves = () => {
     }
   }
 
+  const reasons = [
+    "Sick Leave",
+    "Maternity Leave",
+    "Paternity Leave",
+    "Bereavement Leave",
+    "Vacation Leave",
+    "Unpaid Leave",
+    "Study Leave",
+    "Family Leave",
+    "Mental Health Day",
+    "Marriage Leave",
+    "Childcare Responsibilities",
+    "Public Holidays",
+    "Religious Observance",
+    "Medical Leave",
+    "Family Leave",
+    "Jury Duty",
+    "Court Appearance",
+    "Relocation Leave",
+    "Compassionate Leave",
+    "Work-related Travel",
+    "Other",
+  ]
+
+  const [filter, setFilter] = useState({
+    month: "",
+    status: "",
+    reason: "",
+  })
+
+  const applyFilter = () => {
+    const { month, status, reason } = filter
+    const filtered = leaves.filter((leave: any) => {
+      const leaveMonth = new Date(leave.startDate).getMonth() + 1 // Get month (0-indexed)
+      const matchesMonth = month ? leaveMonth === parseInt(month) : true
+      const matchesStatus = status ? leave.status === status : true
+      const matchesReason = reason ? leave.reason === reason : true
+
+      return matchesMonth && matchesStatus && matchesReason
+    })
+    setFilteredLeaves(filtered)
+  }
+
+  useEffect(() => {
+    applyFilter()
+  }, [filter, leaves])
+
   return (
     <div className="w-full p-10">
       <dialog ref={addRef} className="modal modal-bottom sm:modal-middle">
@@ -130,8 +178,7 @@ const Leaves = () => {
             <div className="form-control">
               <label className="label">
                 Reason
-                <input
-                  type="text"
+                <select
                   value={leaveRequest.reason}
                   onChange={e =>
                     setLeaveRequest({
@@ -139,8 +186,17 @@ const Leaves = () => {
                       reason: e.target.value,
                     })
                   }
-                  className="input input-bordered"
-                />
+                  className="select select-bordered"
+                >
+                  <option value="" disabled>
+                    Select a reason
+                  </option>
+                  {reasons.map(reason => (
+                    <option key={reason} value={reason}>
+                      {reason}
+                    </option>
+                  ))}
+                </select>
               </label>
             </div>
             <div className="modal-action flex justify-center">
@@ -211,17 +267,25 @@ const Leaves = () => {
             <div className="form-control">
               <label className="label">
                 Reason
-                <input
-                  type="text"
-                  value={editedLeave.reason}
+                <select
+                  value={leaveRequest.reason}
                   onChange={e =>
-                    setEditedLeave({
-                      ...editedLeave,
+                    setLeaveRequest({
+                      ...leaveRequest,
                       reason: e.target.value,
                     })
                   }
-                  className="input input-bordered"
-                />
+                  className="select select-bordered"
+                >
+                  <option value="" disabled>
+                    Select a reason
+                  </option>
+                  {reasons.map(reason => (
+                    <option key={reason} value={reason}>
+                      {reason}
+                    </option>
+                  ))}
+                </select>
               </label>
             </div>
             <div className="modal-action flex justify-center">
@@ -272,12 +336,64 @@ const Leaves = () => {
           </div>
         </div>
       </dialog>
+      <div className="flex items-end gap-5">
+        <h1 className="text-3xl font-bold w-fit">Leave Balance:</h1>
+        <h3 className="text-2xl font-semibold">{leaveBalance}</h3>
+      </div>
+      <div className="border-b-[1px] my-6"></div>
+      <h1 className="text-3xl font-bold text-center mb-10">Leaves</h1>
+      <div className="flex justify-between w-full mb-5">
+        <div className="flex gap-5">
+          <label className="label">Month</label>
+          <select
+            className="select select-bordered"
+            value={filter.month}
+            onChange={e => setFilter({ ...filter, month: e.target.value })}
+          >
+            <option value="">All</option>
+            {[...Array(12).keys()].map(m => (
+              <option key={m + 1} value={m + 1}>
+                {new Date(0, m).toLocaleString("default", { month: "long" })}
+              </option>
+            ))}
+          </select>
 
-      <div className="flex justify-between w-full items-center">
-        <div className="flex items-end gap-5">
-          <h1 className="text-3xl font-bold w-fit">Leave Balance:</h1>
-          <h3 className="text-2xl font-semibold">{leaveBalance}</h3>
+          <label className="label">Status</label>
+          <select
+            className="select select-bordered"
+            value={filter.status}
+            onChange={e => setFilter({ ...filter, status: e.target.value })}
+          >
+            <option value="">All</option>
+            <option value="Pending">Pending</option>
+            <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Canceled">Canceled</option>
+          </select>
+
+          <label className="label">Reason</label>
+          <select
+            className="select select-bordered"
+            value={filter.reason}
+            onChange={e => setFilter({ ...filter, reason: e.target.value })}
+          >
+            <option value="">All</option>
+            {reasons.map((r, idx) => (
+              <option key={idx} value={r}>
+                {r}
+              </option>
+            ))}
+          </select>
+          <button
+            className="btn btn-ghost  px-10"
+            onClick={() => {
+              setFilter({ month: "", status: "", reason: "" })
+            }}
+          >
+            Reset
+          </button>
         </div>
+
         <button
           className="btn btn-primary"
           onClick={() => {
@@ -289,39 +405,42 @@ const Leaves = () => {
           Request Leave
         </button>
       </div>
-      <div className="border-b-[1px] my-6"></div>
-      <h1 className="text-3xl font-bold text-center mb-10">Leaves</h1>
 
-      {leaves.length < 1 ? (
+      {filteredLeaves.length < 1 ? (
         <p className="text-center text-2xl">No Leave Requests found</p>
       ) : (
         <table className="table table-zebra w-full">
           <thead className="bg-primary-content text-primary">
             <tr>
               <th></th>
-              <th>startDate</th>
-              <th>endDate</th>
+              <th>Start Date</th>
+              <th>End Date</th>
               <th>Reason</th>
+              <th>Length (Days)</th>
               <th>Status</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            {leaves.map((leave: any, index: number) => (
-              <tr tabIndex={index} key={index} className="hover ">
+            {filteredLeaves.map((leave: any, index: number) => (
+              <tr tabIndex={index} key={index} className="hover">
                 <th>{index + 1}</th>
                 <td>{moment(leave.startDate).format("DD/MM/YYYY")}</td>
                 <td>{moment(leave.endDate).format("DD/MM/YYYY")}</td>
                 <td>{leave.reason}</td>
+                <td>
+                  {moment(leave.endDate).diff(moment(leave.startDate), "days") +
+                    1}
+                </td>
                 <td className="font-semibold">
                   {leave.status === "Approved" ? (
                     <span className="text-green-600">Approved</span>
                   ) : leave.status === "Rejected" ? (
                     <span className="text-red-600">Rejected</span>
                   ) : leave.status === "Canceled" ? (
-                    <span className="!text-orange-500 ">Canceled</span>
+                    <span className="!text-orange-500">Canceled</span>
                   ) : (
-                    <span className="!text-blue-700 ">Pending</span>
+                    <span className="!text-blue-700">Pending</span>
                   )}
                 </td>
                 <td className="flex h-full justify-center gap-3 text-lg">
