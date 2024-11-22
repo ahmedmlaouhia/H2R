@@ -97,37 +97,17 @@ const Users = () => {
 
   const handleFilter = () => {
     const { stringFilter, phoneFilter } = filterData
-
-    // Filter employees based on name, email, and phone
-    const filteredEmployeesData = employees.filter((employee: any) => {
-      const matchesString =
-        stringFilter === "" ||
-        employee.firstName.includes(stringFilter) ||
-        employee.lastName.includes(stringFilter) ||
-        employee.email.includes(stringFilter)
-
-      const matchesPhone =
-        phoneFilter === "" || employee.phone.includes(phoneFilter)
-
-      return matchesString && matchesPhone
-    })
-
-    // Filter HRs based on name, email, and phone
-    const filteredHRsData = HRs.filter((hr: any) => {
-      const matchesString =
-        stringFilter === "" ||
-        hr.firstName.includes(stringFilter) ||
-        hr.lastName.includes(stringFilter) ||
-        hr.email.includes(stringFilter)
-
-      const matchesPhone = phoneFilter === "" || hr.phone.includes(phoneFilter)
-
-      return matchesString && matchesPhone
-    })
-
-    // Update the filtered states
-    setFilteredEmployees(filteredEmployeesData)
-    setFilteredHRs(filteredHRsData)
+    const filterUsers = (list: any) =>
+      list.filter(
+        (user: any) =>
+          (stringFilter === "" ||
+            [user.firstName, user.lastName, user.email].some(field =>
+              field.includes(stringFilter)
+            )) &&
+          (phoneFilter === "" || user.phone.includes(phoneFilter))
+      )
+    setFilteredEmployees(filterUsers(employees))
+    setFilteredHRs(filterUsers(HRs))
   }
 
   useEffect(() => {
