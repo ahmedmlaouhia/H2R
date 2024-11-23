@@ -11,6 +11,8 @@ import LeaveRequests from "./pages/LeaveRequests"
 import Leaves from "./pages/Leaves"
 import Authcontext from "./utils/context"
 import { useState } from "react"
+import Timesheet from "./pages/Timesheet"
+import ManageTimesheets from "./pages/ManageTimesheets"
 
 function Layout() {
   return (
@@ -80,6 +82,22 @@ function App() {
               element: (
                 <ProtectedRoute allowedRoles={["Admin"]}>
                   <Users />
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: "/timesheet",
+              element: (
+                <ProtectedRoute allowedRoles={["Employee"]}>
+                  <Timesheet />
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: "/timesheet/manage",
+              element: (
+                <ProtectedRoute allowedRoles={["HR", "Admin"]}>
+                  <ManageTimesheets />
                 </ProtectedRoute>
               ),
             },
