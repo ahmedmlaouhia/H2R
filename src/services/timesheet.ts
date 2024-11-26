@@ -36,7 +36,10 @@ const TimesheetService = {
     data: { date: string; hours: number }
   ) {
     try {
-      const response = await client().put(`/timesheets/edit/${id}`, data)
+      const response = await client().put(`/timesheets/edit/${id}`, {
+        date: data.date,
+        hours: Number(data.hours),
+      })
       return response.data
     } catch (error) {
       throw error

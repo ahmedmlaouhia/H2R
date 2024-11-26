@@ -270,8 +270,8 @@ const Leaves = () => {
                 <select
                   value={leaveRequest.reason}
                   onChange={e =>
-                    setLeaveRequest({
-                      ...leaveRequest,
+                    setEditedLeave({
+                      ...editedLeave,
                       reason: e.target.value,
                     })
                   }
@@ -443,35 +443,39 @@ const Leaves = () => {
                     <span className="!text-blue-700">Pending</span>
                   )}
                 </td>
-                <td className="flex h-full justify-center gap-3 text-lg">
-                  <button className="tooltip" data-tip="Edit">
-                    <AiTwotoneEdit
-                      className="text-green-700"
-                      onClick={() => {
-                        setEditedLeave({
-                          id: leave.id,
-                          startDate: leave.startDate,
-                          endDate: leave.endDate,
-                          reason: leave.reason,
-                        })
+                <td>
+                  {leave.status === "Pending" && (
+                    <div className="flex h-full gap-3 text-lg">
+                      <button className="tooltip" data-tip="Edit">
+                        <AiTwotoneEdit
+                          className="text-green-700"
+                          onClick={() => {
+                            setEditedLeave({
+                              id: leave.id,
+                              startDate: leave.startDate,
+                              endDate: leave.endDate,
+                              reason: leave.reason,
+                            })
 
-                        if (editRef.current) {
-                          editRef.current.showModal()
-                        }
-                      }}
-                    />
-                  </button>
-                  <button className="tooltip" data-tip="Cancel">
-                    <GiCancel
-                      className="!text-orange-500"
-                      onClick={() => {
-                        setSelectedLeaveId(leave.id)
-                        if (cancelRef.current) {
-                          cancelRef.current.showModal()
-                        }
-                      }}
-                    />
-                  </button>
+                            if (editRef.current) {
+                              editRef.current.showModal()
+                            }
+                          }}
+                        />
+                      </button>
+                      <button className="tooltip" data-tip="Cancel">
+                        <GiCancel
+                          className="!text-orange-500"
+                          onClick={() => {
+                            setSelectedLeaveId(leave.id)
+                            if (cancelRef.current) {
+                              cancelRef.current.showModal()
+                            }
+                          }}
+                        />
+                      </button>
+                    </div>
+                  )}
                 </td>
               </tr>
             ))}

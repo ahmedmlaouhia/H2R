@@ -52,7 +52,7 @@ const Timesheet = () => {
 
   return (
     <div className="p-4 w-full">
-      <h1 className="text-2xl font-bold mb-4">My Timesheet</h1>
+      <h1 className="text-3xl font-bold text-center my-10">My Timesheet</h1>
       <div className="flex flex-col gap-4 mb-6">
         <div className="flex gap-4 items-center">
           <input
@@ -92,6 +92,7 @@ const Timesheet = () => {
               <th>#</th>
               <th>Date</th>
               <th>Hours Worked</th>
+              <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -101,14 +102,23 @@ const Timesheet = () => {
                 <th>{index + 1}</th>
                 <td>{entry.date}</td>
                 <td>{entry.hours}</td>
-                <td className="flex justify-center gap-3 text-lg">
-                  <button
-                    className="tooltip"
-                    data-tip="Edit"
-                    onClick={() => handleEdit(entry)}
-                  >
-                    <AiTwotoneEdit className="text-green-700" />
-                  </button>
+                <td className="font-semibold">
+                  {entry.status === "Approved" ? (
+                    <span className="text-green-600">Approved</span>
+                  ) : (
+                    <span className="!text-blue-700">Pending</span>
+                  )}
+                </td>
+                <td className="text-lg">
+                  {entry.status === "Pending" && (
+                    <button
+                      className="tooltip"
+                      data-tip="Edit"
+                      onClick={() => handleEdit(entry)}
+                    >
+                      <AiTwotoneEdit className="text-green-700" />
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
