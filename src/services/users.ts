@@ -69,7 +69,7 @@ const User = {
 
   async updateUser(user: any) {
     try {
-      const response = await client().put(`/user/update`, user)
+      const response = await client().put(`/user/updateProfile`, user)
       return response.data
     } catch (error) {
       throw error

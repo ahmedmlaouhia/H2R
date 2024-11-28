@@ -54,12 +54,16 @@ const Profile = () => {
       setUser(prev => ({ ...prev, ...editedUser }))
       setIsEditing(false)
     } catch (error: any) {
-      toast.error("Failed to update profile.")
+      toast.error(error.response.data.message)
     }
   }
 
   const handleChangePassword = async () => {
     const { oldPassword, newPassword, confirmPassword } = passwords
+    if (!oldPassword || !newPassword || !confirmPassword) {
+      toast.error("All fields are required.")
+      return
+    }
     if (newPassword !== confirmPassword) {
       toast.error("New passwords do not match.")
       return
@@ -71,7 +75,7 @@ const Profile = () => {
       setPasswords({ oldPassword: "", newPassword: "", confirmPassword: "" })
       setIsChangingPassword(false)
     } catch (error: any) {
-      toast.error("Failed to change password.")
+      toast.error(error.response.data.message)
     }
   }
 

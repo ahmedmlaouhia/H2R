@@ -52,7 +52,7 @@ const Timesheet = () => {
 
   return (
     <div className="p-4 w-full">
-      <h1 className="text-2xl font-bold mb-4">My Timesheet</h1>
+      <h1 className="text-3xl mx-auto w-fit font-bold my-10">My Timesheet</h1>
       <div className="flex flex-col gap-4 mb-6">
         <div className="flex gap-4 items-center">
           <input

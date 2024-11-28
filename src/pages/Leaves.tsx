@@ -337,8 +337,8 @@ const Leaves = () => {
         </div>
       </dialog>
       <div className="flex items-end gap-5">
-        <h1 className="text-3xl font-bold w-fit">Leave Balance:</h1>
-        <h3 className="text-2xl font-semibold">{leaveBalance}</h3>
+        <h1 className="text-xl font-bold w-fit">Leave Balance:</h1>
+        <h3 className="text-xl font-semibold">{leaveBalance}</h3>
       </div>
       <div className="border-b-[1px] my-6"></div>
       <h1 className="text-3xl font-bold text-center mb-10">Leaves</h1>
