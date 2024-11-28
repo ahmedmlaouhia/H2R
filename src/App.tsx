@@ -13,6 +13,7 @@ import Authcontext from "./utils/context"
 import { useState } from "react"
 import Timesheet from "./pages/Timesheet"
 import ManageTimesheets from "./pages/ManageTimesheets"
+import Profile from "./pages/Profile"
 
 function Layout() {
   return (
@@ -101,7 +102,7 @@ function App() {
                 </ProtectedRoute>
               ),
             },
-            { path: "/me", element: <div>User Detail</div> },
+            { path: "/me", element: <Profile /> },
             {
               path: "/leaves",
               element: (
