@@ -14,6 +14,7 @@ import { useState } from "react"
 import Timesheet from "./pages/Timesheet"
 import ManageTimesheets from "./pages/ManageTimesheets"
 import Profile from "./pages/Profile"
+import { io } from "socket.io-client"
 
 function Layout() {
   return (
@@ -34,7 +35,9 @@ function Main() {
 }
 
 function App() {
+  const socket = io("ws://localhost:3000")
   const userr = localStorage.getItem("user") || "{}"
+  socket.emit("join", JSON.parse(userr).id)
   const [user, setUser] = useState({
     name: JSON.parse(userr).firstName || "",
     role: JSON.parse(userr).role || "",
@@ -128,7 +131,7 @@ function App() {
   ])
   return (
     <>
-      <Authcontext.Provider value={{ user, login, logout }}>
+      <Authcontext.Provider value={{ user, login, logout, socket }}>
         <Toaster />
         <RouterProvider router={router} />
       </Authcontext.Provider>

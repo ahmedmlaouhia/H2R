@@ -1,11 +1,14 @@
-import { useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { GiCancel } from "react-icons/gi"
 import { SiTicktick } from "react-icons/si"
 import Leave from "../services/leave"
 import toast from "react-hot-toast"
 import moment from "moment"
+import Authcontext from "../utils/context"
 
 const LeaveRequests = () => {
+  const context = useContext(Authcontext)
+  const socket = context.socket
   const [leaveRequests, setLeaveRequests] = useState([])
   const [filteredLeaves, setFilteredLeaves] = useState(leaveRequests)
   const approveRef = useRef<HTMLDialogElement>(null)
@@ -27,6 +30,7 @@ const LeaveRequests = () => {
     try {
       await Leave.approveLeave(selectedLeaveId).then(() => {
         toast.success("Leave request approved")
+        socket.emit("leaveApproved", selectedLeaveId)
         fetchLeaves()
       })
     } catch (error: any) {
@@ -38,6 +42,7 @@ const LeaveRequests = () => {
     try {
       await Leave.rejectLeave(selectedLeaveId).then(() => {
         toast.success("Leave request rejected")
+        socket.emit("leaveRejected", selectedLeaveId)
         fetchLeaves()
       })
     } catch (error: any) {

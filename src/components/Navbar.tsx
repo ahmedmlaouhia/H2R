@@ -9,6 +9,10 @@ const Navbar = () => {
   const isLoggedIn = localStorage.getItem("token")
   const context = useContext(Authcontext)
   const user = context.user
+  const socket = context.socket
+  socket.on("leaveApproved", () => {
+    toast.success("Leave request approved")
+  })
   const navigate = useNavigate()
 
   const handleLogout = () => {
