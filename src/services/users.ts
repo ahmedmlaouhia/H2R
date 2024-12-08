@@ -37,9 +37,9 @@ const User = {
     }
   },
 
-  async getUserById(id: string) {
+  async getMe() {
     try {
-      const response = await client().get(`/user/${id}`)
+      const response = await client().get(`/user/me`)
       return response.data
     } catch (error) {
       throw error
@@ -69,12 +69,22 @@ const User = {
 
   async updateUser(user: any) {
     try {
-      const response = await client().put(`/user/update/${user.id}`, user)
+      const response = await client().put(`/user/updateProfile`, user)
       return response.data
     } catch (error) {
       throw error
     }
   },
+
+  async changePassword(passwords: any) {
+    try {
+      const response = await client().put(`/user/updatePassword`, passwords)
+      return response.data
+    } catch (error) {
+      throw error
+    }
+  },
+
   async deleteUser(id: string) {
     try {
       const response = await client().delete(`/user/delete/${id}`)

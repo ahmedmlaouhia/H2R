@@ -1,5 +1,4 @@
 import { createContext } from "react"
-
 type User = {
   name: string
   role: string
@@ -10,6 +9,7 @@ interface IContext {
   user: User
   login: (user: User) => void
   logout: () => void
+  socket: any
 }
 
 const Authcontext = createContext<IContext>({
@@ -20,6 +20,7 @@ const Authcontext = createContext<IContext>({
   },
   login: () => {},
   logout: () => {},
+  socket: null,
 })
 
 export default Authcontext

@@ -9,6 +9,10 @@ const Navbar = () => {
   const isLoggedIn = localStorage.getItem("token")
   const context = useContext(Authcontext)
   const user = context.user
+  const socket = context.socket
+  socket.on("leaveApproved", () => {
+    toast.success("Leave request approved")
+  })
   const navigate = useNavigate()
 
   const handleLogout = () => {
@@ -92,7 +96,7 @@ const Navbar = () => {
           </div>
         )}
         <label className="swap swap-rotate ml-10">
-          <input type="checkbox" className="theme-controller" value="dark" />
+          <input type="checkbox" className="theme-controller" value="light" />
           <svg
             className="swap-on h-7 w-7 fill-current"
             xmlns="http://www.w3.org/2000/svg"
