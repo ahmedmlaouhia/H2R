@@ -38,7 +38,7 @@ pipeline {
         branch "devops"
       }
       steps {
-        echo 'pushing ...'
+        echo 'pushing to registry ...'
         sh 'docker push 381491905102.dkr.ecr.us-east-1.amazonaws.com/bohmid/h2r:v1'
       }
     }
