@@ -4,13 +4,16 @@ import { RxAvatar } from "react-icons/rx"
 import { RxHamburgerMenu } from "react-icons/rx"
 import { useContext } from "react"
 import Authcontext from "../utils/context"
+import { MdNotificationsNone } from "react-icons/md"
 
 const Navbar = () => {
   const isLoggedIn = localStorage.getItem("token")
   const context = useContext(Authcontext)
   const user = context.user
   const socket = context.socket
-  socket.on("leaveApproved", () => {
+  console.log(socket)
+
+  socket?.on("leaveApproved", () => {
     toast.success("Leave request approved")
   })
   const navigate = useNavigate()
@@ -33,7 +36,11 @@ const Navbar = () => {
       />
       <div>
         {isLoggedIn ? (
-          <div className="!h-full">
+          <div className="!h-full flex">
+            <div className="indicator">
+              <span className="indicator-item bg-blue-500 p-[] rounded-full"></span>
+              <MdNotificationsNone className="text-2xl" />
+            </div>
             <div className="dropdown  dropdown-end  w-44 !h-full">
               <div
                 className="flex gap-3 hover:text-base-content py-3 hover:bg-base-300 !h-full justify-center items-center"

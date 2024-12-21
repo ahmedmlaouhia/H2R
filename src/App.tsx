@@ -10,11 +10,11 @@ import ProtectedRoute from "./utils/protectedRoute"
 import LeaveRequests from "./pages/LeaveRequests"
 import Leaves from "./pages/Leaves"
 import Authcontext from "./utils/context"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Timesheet from "./pages/Timesheet"
 import ManageTimesheets from "./pages/ManageTimesheets"
 import Profile from "./pages/Profile"
-import { io } from "socket.io-client"
+import { Socket, io } from "socket.io-client"
 
 function Layout() {
   return (
@@ -35,14 +35,22 @@ function Main() {
 }
 
 function App() {
-  const socket = io("ws://localhost:3000")
+  const [socket, setSocket] = useState<Socket | null>(null)
   const userr = localStorage.getItem("user") || "{}"
-  socket.emit("join", JSON.parse(userr).id)
   const [user, setUser] = useState({
     name: JSON.parse(userr).firstName || "",
     role: JSON.parse(userr).role || "",
     isAuth: localStorage.getItem("token") ? true : false,
   })
+
+  useEffect(() => {
+    const s = io("http://localhost:3000")
+    setSocket(s)
+    s.emit("join", JSON.parse(userr).id)
+    return () => {
+      s.disconnect()
+    }
+  }, [])
 
   const login = (user: any) => {
     setUser({
