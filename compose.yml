@@ -1,0 +1,44 @@
+services:
+  h2r:
+    image: h2r
+    container_name: h2r
+    ports:
+      - "5000:80"
+    restart: always
+    depends_on:
+      - h2r-api
+
+  h2r-api:
+    image: h2r-api
+    container_name: h2r-api
+    ports:
+      - "5001:3000"
+    restart: always
+    depends_on:
+      - h2r-db
+
+  h2r-db:
+    container_name: mysql
+    image: mysql:8.3.0
+    restart: always
+    volumes:
+      - h2r-db-volume:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: h2r
+      MYSQL_ROOT_PASSWORD: h2r@123456
+    ports:
+      - 3306:3306
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8088:80"
+    restart: always
+    environment:
+      PMA_HOST: h2r-db
+    depends_on:
+      - h2r-db
+
+volumes:
+  h2r-db-volume:
