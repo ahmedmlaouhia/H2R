@@ -9,13 +9,21 @@ services:
       - h2r-api
 
   h2r-api:
-    image: h2r-api
+    image: 381491905102.dkr.ecr.us-east-1.amazonaws.com/bohmid/h2r-backend:v1
     container_name: h2r-api
     ports:
       - "5001:3000"
     restart: always
     depends_on:
       - h2r-db
+    environment:
+      DB_HOST: h2r-db
+      DB_USER: root
+      DB_PASSWORD: h2r@123456
+      DB_NAME: h2r
+      DB_PORT: 3306
+      PORT: 3000
+      JWT_SECRET: 9bd113df7c98d986e606966f910c9e2c80a28027320ff07d2a8a0897a2233e4e
 
   h2r-db:
     container_name: mysql
