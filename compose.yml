@@ -1,6 +1,6 @@
 services:
   h2r:
-    image: h2r
+    image: 381491905102.dkr.ecr.us-east-1.amazonaws.com/bohmid/h2r:v1
     container_name: h2r
     ports:
       - "5000:80"
