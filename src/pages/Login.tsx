@@ -22,7 +22,14 @@ const Login = () => {
         localStorage.setItem("token", res.token)
         localStorage.setItem("user", JSON.stringify(res.result))
         context.login(res.result)
-        navigate("/")
+        if (res.result.role === "Admin") {
+          navigate("/dashboard");
+        } else if (res.result.role === "Employee") {
+          navigate("/home");
+        } else {
+          toast.error("Unauthorized role");
+          navigate("/unauthorized");
+        }
       })
     } catch (error: any) {
       toast.error(error.response?.data.message || error.message)

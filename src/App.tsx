@@ -1,7 +1,6 @@
 import { Toaster } from "react-hot-toast"
 import Navbar from "./components/Navbar"
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom"
-import Home from "./pages/Home"
 import Login from "./pages/Login"
 import Signup from "./pages/Signup"
 import Users from "./pages/users"
@@ -15,6 +14,8 @@ import Timesheet from "./pages/Timesheet"
 import ManageTimesheets from "./pages/ManageTimesheets"
 import Profile from "./pages/Profile"
 import { Socket, io } from "socket.io-client"
+import AdminDashboard from "./pages/Dashboard"
+import Home from "./pages/Home"
 
 function Layout() {
   return (
@@ -84,8 +85,20 @@ function App() {
           ),
           children: [
             {
-              path: "/",
-              element: <Home />,
+              path: "/home",
+              element: (
+                <ProtectedRoute allowedRoles={["Employee"]}>
+                  <Home />
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: "/dashboard",
+              element: (
+                <ProtectedRoute allowedRoles={["Admin"]}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              ),
             },
             { path: "/hr", element: <div>HR page</div> },
             { path: "/admin", element: <div>admin page</div> },
