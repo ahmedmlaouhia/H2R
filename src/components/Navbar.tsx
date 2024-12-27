@@ -2,20 +2,49 @@ import toast from "react-hot-toast"
 import { NavLink, useNavigate } from "react-router-dom"
 import { RxAvatar } from "react-icons/rx"
 import { RxHamburgerMenu } from "react-icons/rx"
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import Authcontext from "../utils/context"
 import { MdNotificationsNone } from "react-icons/md"
+import Notifications from "../services/notifications"
+
+type Notification = {
+  _id: string
+  title: string
+  message: string
+  isRead: boolean
+}
 
 const Navbar = () => {
+  const [notifications, setNotifications] = useState<Notification[]>([])
   const isLoggedIn = localStorage.getItem("token")
   const context = useContext(Authcontext)
+  const [isThereNotification, setIsThereNotification] = useState(false)
   const user = context.user
   const socket = context.socket
-  console.log(socket)
-
+  const fetchNotifications = async () => {
+    const data = await Notifications.getNotifications()
+    setNotifications(data.notifications)
+  }
   socket?.on("leaveApproved", () => {
-    toast.success("Leave request approved")
+    setIsThereNotification(true)
+    toast.success("A leave request has been approved!")
   })
+
+  socket?.on("leaveRejected", () => {
+    setIsThereNotification(true)
+    toast.error("A leave request has been rejected!")
+  })
+
+  socket?.on("timesheetApproved", () => {
+    setIsThereNotification(true)
+    toast.success("A timesheet entry has been approved!")
+  })
+
+  socket?.on("timesheetRejected", () => {
+    setIsThereNotification(true)
+    toast.error("A timesheet entry has been rejected!")
+  })
+
   const navigate = useNavigate()
 
   const handleLogout = () => {
@@ -24,6 +53,11 @@ const Navbar = () => {
     context.logout()
     toast.success("Logged out successfully")
     navigate("/login")
+  }
+
+  const handleNotification = () => {
+    setIsThereNotification(false)
+    fetchNotifications()
   }
 
   return (
@@ -36,12 +70,64 @@ const Navbar = () => {
       />
       <div>
         {isLoggedIn ? (
-          <div className="!h-full flex">
-            <div className="indicator">
-              <span className="indicator-item bg-blue-500 p-[] rounded-full"></span>
-              <MdNotificationsNone className="text-2xl" />
+          <div className="!h-full flex items-center">
+            <div
+              className="indicator dropdown dropdown-end !h-full mr-5"
+              role="button"
+              tabIndex={0}
+            >
+              {isThereNotification && (
+                <span className="indicator-item bg-warning p-[5px]  rounded-full"></span>
+              )}
+              <MdNotificationsNone
+                className="text-3xl"
+                onClick={handleNotification}
+              />
+              <ul className="menu dropdown-content z-[1] w-64 mt-12 shadow-md p-0 rounded-lg">
+                {notifications.length ? (
+                  notifications.map((notification: Notification) => (
+                    <li key={notification._id}>
+                      {notification.isRead ? (
+                        <div className="flex gap-3 p-2 hover:bg-base-300">
+                          <RxAvatar className="h-10 w-10" />
+
+                          <div className="flex flex-col">
+                            <div className="font-bold">
+                              {notification.title}
+                            </div>
+                            <div className="text-xs ">
+                              {notification.message}
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex gap-3 p-2 hover:bg-base-300 text-white">
+                          <RxAvatar className="h-10 w-10" />
+
+                          <div className="flex flex-col">
+                            <div className="font-bold">
+                              {notification.title}
+                            </div>
+                            <div className="text-xs ">
+                              {notification.message}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </li>
+                  ))
+                ) : (
+                  <li>
+                    <div className="flex gap-3 p-2">
+                      <div className="flex flex-col">
+                        <div className="font-bold">No notifications</div>
+                      </div>
+                    </div>
+                  </li>
+                )}
+              </ul>
             </div>
-            <div className="dropdown  dropdown-end  w-44 !h-full">
+            <div className="dropdown dropdown-end w-44 !h-full">
               <div
                 className="flex gap-3 hover:text-base-content py-3 hover:bg-base-300 !h-full justify-center items-center"
                 role="button"
