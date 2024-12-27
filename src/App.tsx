@@ -45,7 +45,7 @@ function App() {
   })
 
   useEffect(() => {
-    const s = io("/api")
+    const s = io(import.meta.env.VITE_APP_API || "/api")
     setSocket(s)
     s.emit("join", JSON.parse(userr).id)
     return () => {
