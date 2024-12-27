@@ -83,7 +83,7 @@ const Navbar = () => {
                 className="text-3xl"
                 onClick={handleNotification}
               />
-              <ul className="menu dropdown-content z-[1] w-64 mt-12 shadow-md p-0 rounded-lg">
+              <ul className="menu dropdown-content z-[1] w-64 mt-12 shadow-md p-0 rounded-lg bg-base-100">
                 {notifications.length ? (
                   notifications.map((notification: Notification) => (
                     <li key={notification._id}>
