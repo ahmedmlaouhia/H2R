@@ -8,7 +8,7 @@ const Sidebar = () => {
   return (
     <div className="flex flex-col min-w-52 gap-10 h-full px-7 py-20 border-r-[1px] border-base-300">
       <NavLink
-        to="/"
+        to="/dashboard"
         className={({ isActive }) =>
           isActive
             ? "btn bg-primary text-primary-content shadow-none hover:bg-primary !border-none"
