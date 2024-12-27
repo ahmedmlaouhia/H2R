@@ -1,5 +1,4 @@
-import React from "react";
-import { Pie, Bar, Line } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2"
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,8 +10,8 @@ import {
   Legend,
   ArcElement,
   BarElement,
-} from "chart.js";
-import { FaCalendarCheck, FaClock, FaBan, FaCheckCircle } from "react-icons/fa";
+} from "chart.js"
+import { FaCalendarCheck, FaClock, FaBan, FaCheckCircle } from "react-icons/fa"
 
 ChartJS.register(
   CategoryScale,
@@ -24,7 +23,7 @@ ChartJS.register(
   Legend,
   ArcElement,
   BarElement
-);
+)
 
 const Home = () => {
   const barData = {
@@ -51,7 +50,7 @@ const Home = () => {
         borderWidth: 1,
       },
     ],
-  };
+  }
 
   const lineData = {
     labels: [
@@ -84,7 +83,7 @@ const Home = () => {
         fill: true,
       },
     ],
-  };
+  }
 
   return (
     <div className="w-full p-6 space-y-8">
@@ -136,8 +135,6 @@ const Home = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-        
-
         <div className="mt-8 bg-gray-100 p-6 rounded-lg shadow-xl">
           <h3 className="text-2xl font-semibold mb-4">Reminders</h3>
           <ul>
@@ -148,7 +145,7 @@ const Home = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
