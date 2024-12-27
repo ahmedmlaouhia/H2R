@@ -11,7 +11,7 @@ type Notification = {
   _id: string
   title: string
   message: string
-  isRed: boolean
+  isRead: boolean
 }
 
 const Navbar = () => {
@@ -23,14 +23,26 @@ const Navbar = () => {
   const socket = context.socket
   const fetchNotifications = async () => {
     const data = await Notifications.getNotifications()
-    setNotifications(data)
+    setNotifications(data.notifications)
   }
   socket?.on("leaveApproved", () => {
     setIsThereNotification(true)
+    toast.success("A leave request has been approved!")
   })
 
   socket?.on("leaveRejected", () => {
     setIsThereNotification(true)
+    toast.error("A leave request has been rejected!")
+  })
+
+  socket?.on("timesheetApproved", () => {
+    setIsThereNotification(true)
+    toast.success("A timesheet entry has been approved!")
+  })
+
+  socket?.on("timesheetRejected", () => {
+    setIsThereNotification(true)
+    toast.error("A timesheet entry has been rejected!")
   })
 
   const navigate = useNavigate()
@@ -60,20 +72,22 @@ const Navbar = () => {
         {isLoggedIn ? (
           <div className="!h-full flex items-center">
             <div
-              className="indicator dropdown dropdown-end !h-full p-2 rounded-full hover:bg-base-300"
-              onClick={handleNotification}
+              className="indicator dropdown dropdown-end !h-full mr-5"
               role="button"
               tabIndex={0}
             >
               {isThereNotification && (
-                <span className="indicator-item bg-warning p-[5px] rounded-full"></span>
+                <span className="indicator-item bg-warning p-[5px]  rounded-full"></span>
               )}
-              <MdNotificationsNone className="text-3xl" />
+              <MdNotificationsNone
+                className="text-3xl"
+                onClick={handleNotification}
+              />
               <ul className="menu dropdown-content z-[1] w-64 mt-12 shadow-md p-0 rounded-lg">
                 {notifications.length ? (
                   notifications.map((notification: Notification) => (
                     <li key={notification._id}>
-                      {notification.isRed ? (
+                      {notification.isRead ? (
                         <div className="flex gap-3 p-2 hover:bg-base-300">
                           <RxAvatar className="h-10 w-10" />
 

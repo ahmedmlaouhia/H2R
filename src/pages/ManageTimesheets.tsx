@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import TimesheetService from "../services/timesheet"
 import toast from "react-hot-toast"
+import Authcontext from "../utils/context"
 
 const ManageTimesheets: React.FC = () => {
   const [entries, setEntries] = useState([])
+  const context = useContext(Authcontext)
+  const socket = context.socket
 
   const fetchEntries = async () => {
     try {
@@ -18,6 +21,7 @@ const ManageTimesheets: React.FC = () => {
     try {
       await TimesheetService.validateTimesheetEntry(id)
       toast.success("Entry validated!")
+      socket.emit("timesheet", id)
       fetchEntries()
     } catch (error) {
       toast.error("Failed to validate entry")
@@ -39,8 +43,10 @@ const ManageTimesheets: React.FC = () => {
   }, [])
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Manage Timesheets</h1>
+    <div className="p-4 w-full">
+      <h1 className="text-3xl mx-auto w-fit font-bold my-10">
+        Manage Timesheets
+      </h1>
       <table className="table w-full">
         <thead>
           <tr>
@@ -53,7 +59,9 @@ const ManageTimesheets: React.FC = () => {
         <tbody>
           {entries.map((entry: any) => (
             <tr key={entry.id}>
-              <td>{entry.employeeName}</td>
+              <td>
+                {entry.user.firstName} {entry.user.lastName}
+              </td>
               <td>{entry.date}</td>
               <td>{entry.hours}</td>
               <td className="flex gap-2">
