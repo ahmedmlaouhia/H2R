@@ -1,7 +1,17 @@
-import React from 'react';
-import { Line, Bar, Pie } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, BarElement } from 'chart.js';
-import { FaChartBar, FaUserCog, FaUsers, FaClipboardCheck } from 'react-icons/fa';
+import { Line, Bar, Pie } from "react-chartjs-2"
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  BarElement,
+} from "chart.js"
+import { FaChartBar, FaUsers, FaClipboardCheck } from "react-icons/fa"
 
 ChartJS.register(
   CategoryScale,
@@ -13,45 +23,45 @@ ChartJS.register(
   Legend,
   ArcElement,
   BarElement
-);
+)
 
 const DashboardAdmin = () => {
   const lineData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
     datasets: [
       {
-        label: 'Number of Leaves Per Month',
+        label: "Number of Leaves Per Month",
         data: [65, 59, 80, 81, 56, 55],
-        borderColor: 'rgba(75,192,192,1)',
-        backgroundColor: 'rgba(75,192,192,0.2)',
+        borderColor: "rgba(75,192,192,1)",
+        backgroundColor: "rgba(75,192,192,0.2)",
         fill: true,
       },
     ],
-  };
+  }
 
   const barData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
     datasets: [
       {
-        label: '>Employees on Leave Per Month',
+        label: ">Employees on Leave Per Month",
         data: [12, 15, 9, 20, 13, 25],
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: "rgba(54, 162, 235, 0.2)",
+        borderColor: "rgba(54, 162, 235, 1)",
         borderWidth: 1,
       },
     ],
-  };
+  }
 
   const pieData = {
-    labels: ['Congé Annuel', 'Congé Maladie', 'Congé Sans Solde'],
+    labels: ["Congé Annuel", "Congé Maladie", "Congé Sans Solde"],
     datasets: [
       {
         data: [60, 25, 15],
-        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-        hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+        hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
       },
     ],
-  };
+  }
 
   return (
     <div className="w-full p-6 space-y-8">
@@ -87,14 +97,16 @@ const DashboardAdmin = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
         <div className="mb-10">
-          <h3 className="text-2xl text-center mb-4">Number of Leaves Per Month</h3>
+          <h3 className="text-2xl text-center mb-4">
+            Number of Leaves Per Month
+          </h3>
           <Line data={lineData} options={{ responsive: true }} />
         </div>
 
-
-
         <div className="mb-10">
-          <h3 className="text-2xl text-center mb-4">Employees on Leave Per Month</h3>
+          <h3 className="text-2xl text-center mb-4">
+            Employees on Leave Per Month
+          </h3>
           <Bar data={barData} options={{ responsive: true }} />
         </div>
 
@@ -105,7 +117,6 @@ const DashboardAdmin = () => {
       </div>
 
       <div className="grid grid-cols grid-cols-3 gap-6">
-
         <div className="card bg-yellow-100 p-6 rounded-lg shadow-xl">
           <div className="flex items-center space-x-4">
             <FaClipboardCheck className="text-4xl text-yellow-600" />
@@ -134,12 +145,8 @@ const DashboardAdmin = () => {
           </div>
         </div>
       </div>
-
-
-
-      
     </div>
-  );
-};
+  )
+}
 
-export default DashboardAdmin;
+export default DashboardAdmin

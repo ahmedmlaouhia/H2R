@@ -14,7 +14,7 @@ import Timesheet from "./pages/Timesheet"
 import ManageTimesheets from "./pages/ManageTimesheets"
 import Profile from "./pages/Profile"
 import { Socket, io } from "socket.io-client"
-import AdminDashboard from "./pages/Dashboard"
+import DashboardAdmin from "./pages/Dashboard"
 import Home from "./pages/Home"
 
 function Layout() {
@@ -96,7 +96,7 @@ function App() {
               path: "/dashboard",
               element: (
                 <ProtectedRoute allowedRoles={["Admin"]}>
-                  <AdminDashboard />
+                  <DashboardAdmin />
                 </ProtectedRoute>
               ),
             },
