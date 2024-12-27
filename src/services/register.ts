@@ -9,7 +9,7 @@ const register = {
     password: string
   ) {
     try {
-      const response = await client().post("http://localhost:3000/user/create", {
+      const response = await client().post("/user/create", {
         firstName,
         lastName,
         phone,

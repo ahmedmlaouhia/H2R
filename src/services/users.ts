@@ -3,7 +3,7 @@ import client from "../utils/axios"
 const User = {
   async getEmployees() {
     try {
-      const response = await client().get("http://localhost:3000/user/employees")
+      const response = await client().get("/user/employees")
       return response.data
     } catch (error) {
       throw error
@@ -12,7 +12,7 @@ const User = {
 
   async getHR() {
     try {
-      const response = await client().get("http://localhost:3000/user/hr")
+      const response = await client().get("/user/hr")
       return response.data
     } catch (error) {
       throw error
@@ -21,7 +21,7 @@ const User = {
 
   async makeHR(id: string) {
     try {
-      const response = await client().put(`http://localhost:3000/user/makehr/${id}`)
+      const response = await client().put(`/user/makehr/${id}`)
       return response.data
     } catch (error) {
       throw error
@@ -30,7 +30,7 @@ const User = {
 
   async makeEmployee(id: string) {
     try {
-      const response = await client().put(`http://localhost:3000/user/makeEmployee/${id}`)
+      const response = await client().put(`/user/makeEmployee/${id}`)
       return response.data
     } catch (error) {
       throw error
@@ -39,7 +39,7 @@ const User = {
 
   async getMe() {
     try {
-      const response = await client().get(`http://localhost:3000/user/me`)
+      const response = await client().get(`/user/me`)
       return response.data
     } catch (error) {
       throw error
@@ -54,7 +54,7 @@ const User = {
     password: string
   ) {
     try {
-      const response = await client().post("http://localhost:3000/user/create", {
+      const response = await client().post("/user/create", {
         firstName,
         lastName,
         phone,
@@ -69,7 +69,7 @@ const User = {
 
   async updateUser(user: any) {
     try {
-      const response = await client().put(`http://localhost:3000/user/updateProfile`, user)
+      const response = await client().put(`/user/updateProfile`, user)
       return response.data
     } catch (error) {
       throw error
@@ -78,7 +78,7 @@ const User = {
 
   async changePassword(passwords: any) {
     try {
-      const response = await client().put(`http://localhost:3000/user/updatePassword`, passwords)
+      const response = await client().put(`/user/updatePassword`, passwords)
       return response.data
     } catch (error) {
       throw error
@@ -87,7 +87,7 @@ const User = {
 
   async deleteUser(id: string) {
     try {
-      const response = await client().delete(`http://localhost:3000/user/delete/${id}`)
+      const response = await client().delete(`/user/delete/${id}`)
       return response.data
     } catch (error) {
       throw error

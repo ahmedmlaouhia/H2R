@@ -3,7 +3,7 @@ import client from "../utils/axios"
 const TimesheetService = {
   async getTimesheets() {
     try {
-      const response = await client().get("http://localhost:3000/timesheets")
+      const response = await client().get("/timesheets")
       return response.data.timesheets
     } catch (error) {
       throw error
@@ -12,7 +12,7 @@ const TimesheetService = {
 
   async getMyTimesheets() {
     try {
-      const response = await client().get("http://localhost:3000/timesheets/my")
+      const response = await client().get("/timesheets/my")
       return response.data.timesheets
     } catch (error) {
       throw error
@@ -21,7 +21,7 @@ const TimesheetService = {
 
   async createTimesheetEntry(date: string, hours: number) {
     try {
-      const response = await client().post("http://localhost:3000/timesheets/create", {
+      const response = await client().post("/timesheets/create", {
         date,
         hours,
       })
@@ -36,7 +36,7 @@ const TimesheetService = {
     data: { date: string; hours: number }
   ) {
     try {
-      const response = await client().put(`http://localhost:3000/timesheets/edit/${id}`, data)
+      const response = await client().put(`/timesheets/edit/${id}`, data)
       return response.data
     } catch (error) {
       throw error
@@ -45,7 +45,7 @@ const TimesheetService = {
 
   async validateTimesheetEntry(id: string) {
     try {
-      const response = await client().put(`http://localhost:3000/timesheets/validate/${id}`)
+      const response = await client().put(`/timesheets/validate/${id}`)
       return response.data
     } catch (error) {
       throw error

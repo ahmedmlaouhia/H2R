@@ -45,7 +45,7 @@ function App() {
   })
 
   useEffect(() => {
-    const s = io("http://localhost:3000")
+    const s = io("/api")
     setSocket(s)
     s.emit("join", JSON.parse(userr).id)
     return () => {
