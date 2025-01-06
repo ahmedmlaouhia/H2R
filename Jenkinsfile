@@ -43,13 +43,5 @@ pipeline {
       }
     }
   }
-  post {
-    always {
-      echo 'This will always run' 
-      echo 'Deploying H2R...'
-      sh 'docker compose --project-name htwor up -d'
-      echo 'H2R Deployed'
-    }
-  }
 }
   
