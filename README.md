@@ -1,6 +1,6 @@
 # React + Vite + TypeScript Project
 
-This project is built with [Vite](https://vitejs.dev/), using React, TypeScript, and several essential libraries. It includes a backend API and database setup using Docker.
+This project is built with [Vite](https://vitejs.dev/), using React, TypeScript, and several essential libraries like Tailwind CSS and Daisy UI. It includes a backend API and database setup using Docker.
 
 ## Table of Contents
 
